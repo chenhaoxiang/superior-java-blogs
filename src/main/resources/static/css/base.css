@@ -1,0 +1,166 @@
+.page-header-more,
+.page-header-more:link {
+    /*鼠标移动上去，会显示小手型*/
+    cursor: pointer;
+    /*去掉a标签的下划线*/
+    text-decoration: none;
+    color: #31b0d5;
+}
+
+/*访问后*/
+.page-header-more:visited {
+    color: #2e6da4;
+    /*去掉a标签的下划线*/
+    text-decoration: none;
+}
+
+/*悬停时*/
+.page-header-more:hover {
+    /*去掉a标签的下划线*/
+    text-decoration: none;
+    cursor: pointer;
+    color: #dc322f;
+}
+
+/*激活时*/
+.page-header-more:active {
+    color: #dc322f;
+    text-decoration: underline;
+}
+
+.row {
+    overflow: hidden;
+}
+
+.color-black {
+    /*黑色*/
+    color: black;
+}
+
+.color-darkgrey {
+    /*灰色*/
+    color: darkgrey;
+}
+
+.color-light-grey {
+    color: #8a8a8a;
+}
+
+.color-dimgray {
+    /*深灰色*/
+    color: dimgray;
+}
+
+/*去掉a标签的下划线*/
+.text-decoration-none {
+    /*鼠标移动上去，会显示小手型*/
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.text-decoration-none:hover {
+    /*鼠标移动上去，会显示小手型*/
+    cursor: pointer;
+    text-decoration: none;
+    color: #D58512;
+}
+
+.margin-bottom10px {
+    margin-bottom: 10px;
+}
+
+.margin-bottom15px {
+    margin-bottom: 15px;
+}
+
+.center-vertical {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/*页脚css strat*/
+.main-footer {
+    background: #202020;
+    padding: 35px 0 0;
+    color: #959595;
+    margin-top: 50px;
+}
+
+.main-footer .widget {
+    padding: 0 30px
+}
+
+.main-footer .widget .title {
+    color: #fff;
+    border-bottom: 1px solid #303030
+}
+
+.main-footer .widget .tag-cloud a {
+    border: 1px solid #303030
+}
+
+.main-footer .widget .tag-cloud a:hover {
+    border: 1px solid #337ab7
+}
+
+.copyright {
+    background: #111;
+    font-size: 13px;
+    text-align: center;
+    color: #555;
+    padding-top: 14px;
+    padding-bottom: 20px;
+    border-top: 1px solid #303030;
+
+}
+
+.copyright span {
+    margin: 0 .5em
+}
+
+.copyright a {
+    color: #555
+}
+
+/*end*/
+
+/*定制的进行修改bootstrap  css*/
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 768px
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        width: 992px
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 1200px
+    }
+}
+
+/*圆角图片*/
+.img-circular {
+    border-radius: 50%;
+}
+
+.img-height-width75 {
+    height: 75px;
+    width: 75px;
+    min-height: 75px;
+    max-height: 75px;
+    min-width: 75px;
+    max-width: 75px;
+}

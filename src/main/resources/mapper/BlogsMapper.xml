@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huijava.superiorjavablogs.mapper.BlogsMapper">
+    <resultMap id="BaseResultMap" type="com.huijava.superiorjavablogs.entity.Blogs">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="blog_token" jdbcType="VARCHAR" property="blogToken"/>
+        <result column="author" jdbcType="VARCHAR" property="author"/>
+        <result column="summary" jdbcType="VARCHAR" property="summary"/>
+        <result column="original_url" jdbcType="VARCHAR" property="originalUrl"/>
+        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="top_count" jdbcType="INTEGER" property="topCount"/>
+        <result column="view_count" jdbcType="INTEGER" property="viewCount"/>
+        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+        <result column="create_id" jdbcType="INTEGER" property="createId"/>
+        <result column="update_id" jdbcType="INTEGER" property="updateId"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+        <result column="ext1" jdbcType="VARCHAR" property="ext1"/>
+        <result column="ext2" jdbcType="VARCHAR" property="ext2"/>
+        <result column="ext3" jdbcType="VARCHAR" property="ext3"/>
+        <result column="collect_count" jdbcType="INTEGER" property="collectCount"/>
+        <result column="original" jdbcType="TINYINT" property="original"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+</mapper>

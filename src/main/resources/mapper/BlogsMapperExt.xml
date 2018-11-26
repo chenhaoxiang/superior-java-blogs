@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huijava.superiorjavablogs.mapper.BlogsMapperExt">
+    <resultMap id="BaseResultMap" type="com.huijava.superiorjavablogs.entity.Blogs">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="blog_token" jdbcType="VARCHAR" property="blogToken"/>
+        <result column="author" jdbcType="VARCHAR" property="author"/>
+        <result column="summary" jdbcType="VARCHAR" property="summary"/>
+        <result column="original_url" jdbcType="VARCHAR" property="originalUrl"/>
+        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="top_count" jdbcType="INTEGER" property="topCount"/>
+        <result column="view_count" jdbcType="INTEGER" property="viewCount"/>
+        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+        <result column="create_id" jdbcType="INTEGER" property="createId"/>
+        <result column="update_id" jdbcType="INTEGER" property="updateId"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+        <result column="ext1" jdbcType="VARCHAR" property="ext1"/>
+        <result column="ext2" jdbcType="VARCHAR" property="ext2"/>
+        <result column="ext3" jdbcType="VARCHAR" property="ext3"/>
+        <result column="collect_count" jdbcType="INTEGER" property="collectCount"/>
+        <result column="original" jdbcType="TINYINT" property="original"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+
+    <sql id="BaseSql">
+    id,title,blog_token,author,summary,original_url,publish_time,create_time,update_time,status
+    ,top_count,view_count,comment_count,category_id,create_id,update_id,version
+    ,ext1,ext2,ext3,collect_count,original,content
+  </sql>
+
+    <resultMap id="BlogsDTOBaseResultMap" type="com.huijava.superiorjavablogs.dto.BlogsDTO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="blog_token" jdbcType="VARCHAR" property="blogToken"/>
+        <result column="author" jdbcType="VARCHAR" property="author"/>
+        <result column="summary" jdbcType="VARCHAR" property="summary"/>
+        <result column="original_url" jdbcType="VARCHAR" property="originalUrl"/>
+        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="top_count" jdbcType="INTEGER" property="topCount"/>
+        <result column="view_count" jdbcType="INTEGER" property="viewCount"/>
+        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
+        <result column="category_id" jdbcType="INTEGER" property="categoryId"/>
+        <result column="create_id" jdbcType="INTEGER" property="createId"/>
+        <result column="update_id" jdbcType="INTEGER" property="updateId"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+        <result column="ext1" jdbcType="VARCHAR" property="ext1"/>
+        <result column="ext2" jdbcType="VARCHAR" property="ext2"/>
+        <result column="ext3" jdbcType="VARCHAR" property="ext3"/>
+        <result column="collect_count" jdbcType="INTEGER" property="collectCount"/>
+        <result column="original" jdbcType="TINYINT" property="original"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+
+        <result column="nike_name" jdbcType="VARCHAR" property="nikeName"/>
+        <!-- 这里仅仅进行了一对多的映射 -->
+        <collection property="tagsList" ofType="com.huijava.superiorjavablogs.entity.Tags">
+            <id column="tags_id" jdbcType="INTEGER" property="id"/>
+            <result column="name" jdbcType="VARCHAR" property="name"/>
+            <result column="color_name" jdbcType="VARCHAR" property="colorName"/>
+        </collection>
+    </resultMap>
+
+    <sql id="BlogsDTOSql">
+    b.id, b.title, b.blog_token, b.author, b.summary, b.status, b.top_count, b.view_count, b.comment_count
+    , b.collect_count,b.category_id,b.create_time
+    , t.id tags_id,t.name,t.color_name
+    ,u.nike_name
+  </sql>
+
+
+    <sql id="BlogsDTODetailsSql">
+    b.id,b.title,b.blog_token,b.author,b.summary,b.original_url,b.publish_time,b.create_time,b.update_time,b.status
+    ,b.top_count,b.view_count,b.comment_count,b.category_id,b.create_id,b.update_id,b.version
+    ,b.ext1,b.ext2,b.ext3,b.collect_count,b.original,b.content
+    , t.id tags_id,t.name,t.color_name
+    ,u.nike_name
+  </sql>
+
+    <!--TODO 该函数和like %**% 效率其实差不多的，也没有走索引。 后期如果开始慢了，建议使用缓存redis优化-->
+    <select id="selectBlogsByTitleKeyword" resultMap="BaseResultMap">
+        select
+        <include refid="BaseSql"/>
+        from blogs
+        WHERE LOCATE(#{keyWord},title)>0
+    </select>
+
+
+    <select id="selectNewBlogsByNumber" resultMap="BaseResultMap">
+        select
+        <include refid="BaseSql"/>
+        from blogs
+        where status=#{status}
+        ORDER BY create_time DESC limit #{number}
+    </select>
+    <select id="selectNewBlogsDTOByNumber" resultMap="BlogsDTOBaseResultMap">
+        select
+        <include refid="BlogsDTOSql"></include>
+        from blogs as b left join blogs_tags_r as rbt on b.id=rbt.blogs_id
+        left join tags as t on t.id=rbt.tags_id
+        left join users as u on u.id=b.create_id
+        where b.status=#{status}
+        ORDER BY b.create_time DESC limit #{number}
+    </select>
+
+
+    <select id="selectBlogsByDaysAndNumber" resultMap="BaseResultMap">
+        select
+        <include refid="BaseSql"/>
+        from blogs
+        where create_time > #{day}
+        ORDER BY ${fieldName} DESC limit #{number}
+    </select>
+
+    <select id="selectBlogsDTOByDaysAndNumber" resultMap="BlogsDTOBaseResultMap">
+    select
+    b.id, b.title, b.blog_token, b.author,b.status, b.top_count, b.view_count, b.comment_count
+    , b.collect_count,b.category_id,b.create_time
+    ,u.nike_name
+    from blogs as b
+    left join users as u
+    on u.id=b.create_id
+    where b.create_time > #{day}
+    AND b.status = #{status}
+    ORDER BY b.${fieldName} DESC limit #{number}
+  </select>
+
+    <select id="selectByBlogToken" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="BaseSql"/>
+        from blogs
+        where blog_token = #{blogToken,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getBlogsDTOByBlogToken" parameterType="java.lang.String" resultMap="BlogsDTOBaseResultMap">
+        select
+        <include refid="BlogsDTODetailsSql"></include>
+        from blogs as b left join blogs_tags_r as rbt on b.id=rbt.blogs_id
+        left join tags as t on t.id=rbt.tags_id
+        left join users as u on u.id=b.create_id
+        where b.blog_token = #{blogToken,jdbcType=VARCHAR}
+    </select>
+
+    <update id="addBlogsViewsOne">
+        UPDATE blogs
+        SET view_count=view_count+1
+        WHERE blog_token = #{blogToken,jdbcType=VARCHAR}
+    </update>
+
+</mapper>
