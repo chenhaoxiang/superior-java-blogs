@@ -183,7 +183,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>4.1.8</version>
+            <version>4.2.1</version>
         </dependency>
 
         <!-- 请求头参数分析包 -->
