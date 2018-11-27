@@ -64,7 +64,7 @@ public class BlogsServiceImpl extends AbstractService<Blogs> implements BlogsSer
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void insertBlog(Blogs newBlogs, List<Tags> tagsList, List<Tags> oldTagsList) {
+    public void insertBlog(Blogs newBlogs, List<Tags> tagsList, List<Tags> oldTagsList, byte status) {
         if (StringUtils.isBlank(newBlogs.getSummary())) {
             if (newBlogs.getContent().length() > BlogsConstans.MAX_SUMMARY_LENGTH) {
                 newBlogs.setSummary(newBlogs.getContent().substring(0, BlogsConstans.MAX_SUMMARY_LENGTH) + "...");
@@ -72,7 +72,7 @@ public class BlogsServiceImpl extends AbstractService<Blogs> implements BlogsSer
                 newBlogs.setSummary(newBlogs.getContent());
             }
         }
-        newBlogs.setStatus((byte) StatusEnum.WAITREVIEW.getCode());
+        newBlogs.setStatus(status);
         Integer row = blogsMapper.insertSelective(newBlogs);
         LOGGER.debug("插入博客后返回的值：row={},blog.id={}", row, newBlogs.getId());
         if (!row.equals(1)) {

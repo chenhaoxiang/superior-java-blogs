@@ -9,6 +9,7 @@ import com.huijava.superiorjavablogs.common.base.BaseController;
 import com.huijava.superiorjavablogs.common.constant.BlogsConstans;
 import com.huijava.superiorjavablogs.common.enums.BlogOriginalEnum;
 import com.huijava.superiorjavablogs.common.enums.ColorNameEnum;
+import com.huijava.superiorjavablogs.common.enums.StatusEnum;
 import com.huijava.superiorjavablogs.common.exception.ServiceException;
 import com.huijava.superiorjavablogs.common.result.ResultModel;
 import com.huijava.superiorjavablogs.entity.Blogs;
@@ -174,7 +175,7 @@ public class BlogsAdminController extends BaseController {
         }
         blogs.setCreateId(users.getId());
         blogs.setUpdateId(users.getId());
-        blogsService.insertBlog(blogs, tagsList, oldTagsList);
+        blogsService.insertBlog(blogs, tagsList, oldTagsList, (byte) StatusEnum.WAITREVIEW.getCode());
         log.info("插入博客成功，blogs={}", blogs);
         //清除博客缓存需要的参数
         attributes.addFlashAttribute("cleanLocalStorage", "1");

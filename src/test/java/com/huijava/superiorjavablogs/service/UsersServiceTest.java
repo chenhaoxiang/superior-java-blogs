@@ -34,4 +34,5 @@ public class UsersServiceTest extends BaseTest {
         usersForm.setPassword("1234");
         LOGGER.info("修改密码:{}", usersService.updatePassword(usersForm));
     }
+
 }

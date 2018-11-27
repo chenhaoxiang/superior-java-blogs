@@ -29,7 +29,6 @@
     </appender>
 
     <logger name="com.huijava" level="DEBUG">
-        <appender-ref ref="console"/>
     </logger>
 
     <!--建立一个默认的root的logger-->

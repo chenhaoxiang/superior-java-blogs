@@ -1,5 +1,5 @@
 /**
- * huijava.com
+ * fshows.com
  * Copyright (C) 2013-2018 All Rights Reserved.
  */
 package com.huijava.superiorjavablogs.util;
@@ -9,12 +9,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 定制的文件工具类
+ *
  *
  * @author chenhx
- * @version FileUtils.java, v 0.1 2018-09-03 下午 7:24
+ * @version FileUtils.java, v 0.1 2018-11-27 下午 11:57 chenhx
  */
 public class FileUtils {
+    /**
+     * 获取当前路径下所有文件
+     *
+     * @param path
+     * @return
+     */
+    public static List<String> getFiles(String path) {
+        List<String> files = new ArrayList<>();
+        if (path == null) {
+            return files;
+        }
+        File file = new File(path);
+        if (!file.exists()) {
+            return files;
+        }
+        File[] tempList = file.listFiles();
+        if (tempList == null) {
+            return files;
+        }
+        for (File aTempList : tempList) {
+            if (aTempList.isFile()) {
+                files.add(aTempList.toString());
+            } else if (aTempList.isDirectory()) {
+                files.addAll(getFiles(aTempList.getPath()));
+            }
+        }
+        return files;
+    }
+
     /**
      * 递归取到当前目录所有文件
      *
@@ -79,4 +108,10 @@ public class FileUtils {
         }
         file.delete();
     }
+
+    public static void main(String[] args) {
+        System.out.println(getFiles("D:\\github\\alidayu-tools"));
+
+    }
+
 }

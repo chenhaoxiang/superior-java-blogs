@@ -167,7 +167,7 @@ public class IndexController extends BaseController {
         Example example = new Example(Blogs.class);
         example.createCriteria().andCondition("status = 0 " + querySql);
         ////注意用的是类中的属性，不是数据库中的属性
-        example.orderBy("id").desc();
+        example.orderBy("createTime").desc();
         //排除文章内容
         example.excludeProperties("content");
         PageInfo pageInfo = PageHelper.startPage(pageNum, BlogsConstans.BLOGS_PAGE_SIZE).doSelectPageInfo(

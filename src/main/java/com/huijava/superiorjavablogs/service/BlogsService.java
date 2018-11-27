@@ -30,7 +30,7 @@ public interface BlogsService extends Service<Blogs> {
      * @param oldTagsList 已经存在的标签
      * @return
      */
-    void insertBlog(Blogs blogs, List<Tags> tagsList, List<Tags> oldTagsList);
+    void insertBlog(Blogs blogs, List<Tags> tagsList, List<Tags> oldTagsList, byte status);
 
     /**
      * 通过blogToken获取具体的博客
