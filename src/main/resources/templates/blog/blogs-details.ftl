@@ -127,6 +127,11 @@
                     </div>
                 </div>
 
+                <!--在该div中展示,如有初始化的数据可以放在textarea中-->
+                <div id="testEditorMdview">
+                    <textarea id="append-content" style="display:none;">${blogs.content}</textarea>
+                </div>
+
 
                     <#include "../include/tabbable.ftl"/>
 
@@ -153,20 +158,12 @@
 <!--将markdown 转换为 html 方式二-->
 <#--<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>-->
 <script type="text/javascript">
-    //首先是为Function对象扩展一个方法
-    Function.prototype.getMutilines = function () {
-        var content = new String(this);
-        var start = content.indexOf('/*') + 3;
-        var stop = content.lastIndexOf('*/');
-        return content.substring(start, stop);
-    };
-    var content = function () {/* ${blogs.content} */
-    };
+    var content = $("#append-content").val();
     // var content = jQuery("#blogsContent").html();
     //使用el表达式获取后台返回的markdown内容";
     <!--将markdown 转换为 html 方式一-->
     var converter = new showdown.Converter(); //初始化转换器
-    var htmlContent = converter.makeHtml(content.getMutilines()); //将MarkDown转为html格式的内容
+    var htmlContent = converter.makeHtml(content); //将MarkDown转为html格式的内容
     $("#markdown").html(htmlContent); //添加到 div 中 显示出来
     <!--将markdown 转换为 html 方式二-->
     // document.getElementById('markdown').innerHTML =marked(content.getMutilines());
