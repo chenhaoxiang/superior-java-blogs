@@ -11,7 +11,7 @@
     <link href="/prism/prism-okaidia.css" rel="stylesheet">
     <style>
         img {
-            width: 100%;
+            max-width: 100%;
         }
     </style>
 
