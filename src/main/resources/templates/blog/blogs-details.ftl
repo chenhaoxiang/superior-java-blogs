@@ -9,6 +9,11 @@
 <#--<link href="/prism/prism-coy.css" rel="stylesheet">-->
 <#--黑色 绿字-->
     <link href="/prism/prism-okaidia.css" rel="stylesheet">
+    <style>
+        img {
+            width: 100%;
+        }
+    </style>
 
     <title>${blogs.title!""}-huijava</title>
 </head>
