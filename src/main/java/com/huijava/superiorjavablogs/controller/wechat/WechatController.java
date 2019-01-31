@@ -52,7 +52,7 @@ public class WechatController {
      * @return
      */
     @RequestMapping("/authorize")
-    public String authorize(@RequestParam("returnUrl") String returnUrl) {
+    public String authorize(@RequestParam(value = "returnUrl", required = false, defaultValue = "huijava") String returnUrl) {
         //1.配置
         //2.调用方法
         //重定向地址 配置到配置文件中去
