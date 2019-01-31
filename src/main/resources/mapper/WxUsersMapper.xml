@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huijava.superiorjavablogs.mapper.WxUsersMapper">
+    <resultMap id="BaseResultMap" type="com.huijava.superiorjavablogs.entity.WxUsers">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="subscribe" jdbcType="TINYINT" property="subscribe"/>
+        <result column="openid" jdbcType="VARCHAR" property="openid"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="sex" jdbcType="TINYINT" property="sex"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="language" jdbcType="VARCHAR" property="language"/>
+        <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl"/>
+        <result column="subscribe_time" jdbcType="BIGINT" property="subscribeTime"/>
+        <result column="unionid" jdbcType="VARCHAR" property="unionid"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="groupid" jdbcType="INTEGER" property="groupid"/>
+        <result column="subscribe_scene" jdbcType="VARCHAR" property="subscribeScene"/>
+        <result column="Invitation_code" jdbcType="VARCHAR" property="invitationCode"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+</mapper>

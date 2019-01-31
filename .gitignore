@@ -11,8 +11,8 @@
 .sts4-cache
 
 #### 排除线上配置的文件
-#**/application-prod.properties
-#**/logback-prod.xml
+**/application-prod.properties
+**/logback-prod.xml
 
 ### IntelliJ IDEA ###
 .idea

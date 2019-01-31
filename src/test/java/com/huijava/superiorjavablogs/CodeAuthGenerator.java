@@ -10,17 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.generator.api.MyBatisGenerator;
-import org.mybatis.generator.config.Configuration;
-import org.mybatis.generator.config.Context;
-import org.mybatis.generator.config.GeneratedKey;
-import org.mybatis.generator.config.JDBCConnectionConfiguration;
-import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
-import org.mybatis.generator.config.JavaModelGeneratorConfiguration;
-import org.mybatis.generator.config.ModelType;
-import org.mybatis.generator.config.PluginConfiguration;
-import org.mybatis.generator.config.PropertyRegistry;
-import org.mybatis.generator.config.SqlMapGeneratorConfiguration;
-import org.mybatis.generator.config.TableConfiguration;
+import org.mybatis.generator.config.*;
 import org.mybatis.generator.internal.DefaultShellCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +23,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 代码生成器，根据数据表名称生成对应的Model、Mapper、Service、Controller简化开发。
@@ -47,6 +33,17 @@ import java.util.Map;
 @TestConfiguration("classpath:application.properties")
 @Data
 public class CodeAuthGenerator {
+
+    @Test
+    public void main() {
+        String[] tablesNames = jdbcTableNames.split(";");
+        //生成代码
+        authCreateCode(tablesNames);
+        //重命名包名
+//        renamePackage(getJavaPath());
+//        renamePackage(getTestPath());
+    }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CodeAuthGenerator.class);
     /**
      * 项目在硬盘上的根路径
@@ -149,16 +146,6 @@ public class CodeAuthGenerator {
     @Value("${project.ignore.prefix}")
     private Integer ignorePrefix = 0;
 
-    @Test
-    public void main() {
-        String[] tablesNames = jdbcTableNames.split(";");
-        //生成代码
-        authCreateCode(tablesNames);
-        //重命名包名
-//        renamePackage(getJavaPath());
-//        renamePackage(getTestPath());
-    }
-
     /**
      * 重名名目录代码中的项目包名
      */
@@ -244,7 +231,7 @@ public class CodeAuthGenerator {
 
     public void genModelAndMapper(String tableName, String modelName) {
         Context context = new Context(ModelType.FLAT);
-        context.setId("spring-boot-quick-project");
+        context.setId("superior-java-blogs");
         context.setTargetRuntime("MyBatis3Simple");
         context.addProperty(PropertyRegistry.CONTEXT_BEGINNING_DELIMITER, "`");
         context.addProperty(PropertyRegistry.CONTEXT_ENDING_DELIMITER, "`");

@@ -16,5 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
 @TestConfiguration("classpath:application.properties")
+//@ComponentScan(basePackages = {"com.huijava.**","me.chanjar.**"})
 public class BaseTest {
 }
