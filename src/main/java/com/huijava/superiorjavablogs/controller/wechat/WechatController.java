@@ -5,6 +5,8 @@ import com.huijava.superiorjavablogs.common.enums.ResultEnum;
 import com.huijava.superiorjavablogs.common.exception.SellException;
 import com.huijava.superiorjavablogs.configurer.WechatConfig;
 import com.huijava.superiorjavablogs.configurer.WxMpConfiguration;
+import com.huijava.superiorjavablogs.entity.WxUsers;
+import com.huijava.superiorjavablogs.service.WxUsersService;
 import com.huijava.superiorjavablogs.util.WechatUtils;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -30,6 +32,9 @@ public class WechatController {
 
     @Autowired
     private WechatConfig wechatConfig;
+
+    @Autowired
+    private WxUsersService wxUsersService;
 
     /**
      * 访问微信主页
@@ -110,15 +115,29 @@ public class WechatController {
      * @return
      */
     @RequestMapping("/userInfo")
-    public ModelAndView userInfo(@RequestParam("openid") String openid) {
-        log.info("跳转红包页面，openid={}", openid);
+    public ModelAndView userInfo(@RequestParam("openid") String openid, Model model) {
+        log.info("微信授权后跳转红包页面，openid={}", openid);
         //通过openid查询数据库
+        WxUsers wxUsers = wxUsersService.getWxUsersByOpenId(openid);
+        log.info("微信授权后跳转红包页面，wxUsers={}", wxUsers);
+        if (wxUsers == null) {
+            //1.查询出来的数据为null
+            //通过获取基本的access_token-2000次
+            String accessToken = WechatUtils.getAccessToken(wechatConfig.getAppId(), wechatConfig.getAppSecret(), 2);
+            //2.需要用户授权，获取用户基本信息
+            WxUsers nowWxUsers = WechatUtils.getWxUsers(accessToken, openid, 2);
+            if (nowWxUsers == null) {
+                log.error("微信授权后跳转红包页面，获取的用户信息为null：openid={},accessToken={}", openid, accessToken);
+                throw new SellException(ResultEnum.WECHAT_MP_ERROR.getCode(), ResultEnum.WECHAT_MP_ERROR.getMessage());
+            }
+            //生成邀请码
 
-        //1.查询出来的数据为null
-        //通过获取基本的access_token-2000次
-        String accessToken = WechatUtils.getAccessToken(wechatConfig.getAppId(), wechatConfig.getAppSecret(), 2);
 
-        //2.需要用户授权，获取用户基本信息
+            //插入用户信息到表中
+
+
+        }
+
 
         //3.展示该用户获取的口令
 

@@ -1,9 +1,12 @@
 package com.huijava.superiorjavablogs.entity;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "wx_users")
+@ToString
 public class WxUsers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
