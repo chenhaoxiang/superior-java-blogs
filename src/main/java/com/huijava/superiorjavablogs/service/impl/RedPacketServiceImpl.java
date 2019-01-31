@@ -7,6 +7,7 @@ import com.huijava.superiorjavablogs.service.RedPacketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * @author chenhaoxiang
@@ -18,4 +19,15 @@ public class RedPacketServiceImpl extends AbstractService<RedPacket> implements 
     @Autowired
     private RedPacketMapper redPacketMapper;
 
+    @Override
+    public int insertSelective(RedPacket redPacket) {
+        return redPacketMapper.insertSelective(redPacket);
+    }
+
+    @Override
+    public RedPacket getByInvitationCode(String invitationCode) {
+        Example example = new Example(RedPacket.class);
+        example.createCriteria().andCondition("invitation_code = " + invitationCode);
+        return null;
+    }
 }

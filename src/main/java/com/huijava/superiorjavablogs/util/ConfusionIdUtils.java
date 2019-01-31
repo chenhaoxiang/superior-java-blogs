@@ -7,7 +7,7 @@ import java.util.TreeMap;
 /**
  * 根据id混淆
  */
-public class ShareCodeUtils {
+public class ConfusionIdUtils {
 
     /**
      * 随机字符串

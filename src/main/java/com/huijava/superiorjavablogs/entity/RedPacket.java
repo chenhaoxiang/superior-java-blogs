@@ -1,11 +1,8 @@
 package com.huijava.superiorjavablogs.entity;
 
-import lombok.ToString;
-
 import javax.persistence.*;
 import java.util.Date;
 
-@ToString
 @Table(name = "red_packet")
 public class RedPacket {
     @Id
@@ -40,6 +37,12 @@ public class RedPacket {
      */
     @Column(name = "update_time")
     private Date updateTime;
+
+    /**
+     * 邀请码
+     */
+    @Column(name = "invitation_code")
+    private String invitationCode;
 
     /**
      * @return id
@@ -143,5 +146,23 @@ public class RedPacket {
      */
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    /**
+     * 获取邀请码
+     *
+     * @return invitation_code - 邀请码
+     */
+    public String getInvitationCode() {
+        return invitationCode;
+    }
+
+    /**
+     * 设置邀请码
+     *
+     * @param invitationCode 邀请码
+     */
+    public void setInvitationCode(String invitationCode) {
+        this.invitationCode = invitationCode;
     }
 }

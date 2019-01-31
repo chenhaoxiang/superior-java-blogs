@@ -1,12 +1,9 @@
 package com.huijava.superiorjavablogs.entity;
 
-import lombok.ToString;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "wx_users")
-@ToString
 public class WxUsers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,18 +21,11 @@ public class WxUsers {
 
     /**
      * 用户的昵称
-     用户的昵称
-     用户的昵称
      */
     private String nickname;
 
     /**
      * 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
      */
     private Byte sex;
 
@@ -90,12 +80,6 @@ public class WxUsers {
      */
     @Column(name = "subscribe_scene")
     private String subscribeScene;
-
-    /**
-     * 邀请码 - 必有
-     */
-    @Column(name = "Invitation_code")
-    private String invitationCode;
 
     /**
      * 父类id
@@ -166,12 +150,8 @@ public class WxUsers {
 
     /**
      * 获取用户的昵称
-     用户的昵称
-     用户的昵称
      *
      * @return nickname - 用户的昵称
-    用户的昵称
-    用户的昵称
      */
     public String getNickname() {
         return nickname;
@@ -179,12 +159,8 @@ public class WxUsers {
 
     /**
      * 设置用户的昵称
-     用户的昵称
-     用户的昵称
      *
      * @param nickname 用户的昵称
-    用户的昵称
-    用户的昵称
      */
     public void setNickname(String nickname) {
         this.nickname = nickname;
@@ -192,18 +168,8 @@ public class WxUsers {
 
     /**
      * 获取用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
      *
      * @return sex - 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-    用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-    用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-    用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-    用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-    用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
      */
     public Byte getSex() {
         return sex;
@@ -211,18 +177,8 @@ public class WxUsers {
 
     /**
      * 设置用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-     用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
      *
      * @param sex 用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-    用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-    用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-    用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-    用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
-    用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
      */
     public void setSex(Byte sex) {
         this.sex = sex;
@@ -406,24 +362,6 @@ public class WxUsers {
      */
     public void setSubscribeScene(String subscribeScene) {
         this.subscribeScene = subscribeScene;
-    }
-
-    /**
-     * 获取邀请码 - 必有
-     *
-     * @return Invitation_code - 邀请码 - 必有
-     */
-    public String getInvitationCode() {
-        return invitationCode;
-    }
-
-    /**
-     * 设置邀请码 - 必有
-     *
-     * @param invitationCode 邀请码 - 必有
-     */
-    public void setInvitationCode(String invitationCode) {
-        this.invitationCode = invitationCode;
     }
 
     /**

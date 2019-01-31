@@ -10,4 +10,8 @@ import com.huijava.superiorjavablogs.entity.RedPacket;
  */
 public interface RedPacketService extends Service<RedPacket> {
 
+    int insertSelective(RedPacket redPacket);
+
+    RedPacket getByInvitationCode(String invitationCode);
+
 }

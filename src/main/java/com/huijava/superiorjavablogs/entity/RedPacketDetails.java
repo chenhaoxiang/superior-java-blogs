@@ -1,11 +1,8 @@
 package com.huijava.superiorjavablogs.entity;
 
-import lombok.ToString;
-
 import javax.persistence.*;
 import java.util.Date;
 
-@ToString
 @Table(name = "red_packet_details")
 public class RedPacketDetails {
     @Id
