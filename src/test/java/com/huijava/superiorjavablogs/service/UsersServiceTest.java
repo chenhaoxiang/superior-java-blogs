@@ -20,11 +20,13 @@ public class UsersServiceTest extends BaseTest {
     @Test
     public void registerAdmin() {
         Users usersForm = new Users();
-        usersForm.setUsername("admin");
-        usersForm.setPassword("123456");
+        usersForm.setUsername("123");
+        usersForm.setPassword("asfdgdfgdffs");
         usersForm.setNikeName("谙忆");
-        usersForm.setEmail("619699629@qq.com");
+        usersForm.setEmail("1234345@qq.com");
+        LOGGER.info("usersForm:{}", usersForm);
         LOGGER.info("注册管理员:{}", usersService.registerAdmin(usersForm));
+        LOGGER.info("usersForm:{}", usersForm);
     }
 
     @Test

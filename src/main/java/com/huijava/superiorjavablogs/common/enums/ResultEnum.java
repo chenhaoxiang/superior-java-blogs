@@ -49,6 +49,7 @@ public enum ResultEnum {
 
     LOGIN_FAIL(28, "登录失败,登录信息不正确"),
     LOGOUT_SUCCESS(29, "登出成功"),
+    INSERT_DATA_FAILED(30, "插入数据失败"),
     ;
     private Integer code;
     private String message;

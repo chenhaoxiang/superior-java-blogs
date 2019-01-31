@@ -130,7 +130,14 @@ public class WechatController {
                 log.error("微信授权后跳转红包页面，获取的用户信息为null：openid={},accessToken={}", openid, accessToken);
                 throw new SellException(ResultEnum.WECHAT_MP_ERROR.getCode(), ResultEnum.WECHAT_MP_ERROR.getMessage());
             }
-            //生成邀请码
+            //插入数据
+            int row = wxUsersService.insert(nowWxUsers);
+            if (row != 1) {
+                log.error("微信授权后跳转红包页面，插入数据失败：row={},nowWxUsers={}", row, nowWxUsers);
+                throw new SellException(ResultEnum.INSERT_DATA_FAILED.getCode(), ResultEnum.INSERT_DATA_FAILED.getMessage());
+            }
+            //使用id进行生成邀请码 - 缺点-需要再修改一次数据库数据
+
 
 
             //插入用户信息到表中

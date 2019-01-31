@@ -16,4 +16,7 @@ public interface WxUsersService extends Service<WxUsers> {
      * @return
      */
     WxUsers getWxUsersByOpenId(String openid);
+
+    int insertSelective(WxUsers wxUsers);
+
 }

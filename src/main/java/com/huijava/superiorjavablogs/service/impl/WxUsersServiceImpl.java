@@ -25,4 +25,8 @@ public class WxUsersServiceImpl extends AbstractService<WxUsers> implements WxUs
         return wxUsersMapper.selectOneByExample(example);
     }
 
+    @Override
+    public int insertSelective(WxUsers wxUsers) {
+        return wxUsersMapper.insertSelective(wxUsers);
+    }
 }
