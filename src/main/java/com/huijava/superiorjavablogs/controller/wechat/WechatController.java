@@ -5,6 +5,7 @@ import com.huijava.superiorjavablogs.common.enums.ResultEnum;
 import com.huijava.superiorjavablogs.common.exception.SellException;
 import com.huijava.superiorjavablogs.configurer.WechatConfig;
 import com.huijava.superiorjavablogs.configurer.WxMpConfiguration;
+import com.huijava.superiorjavablogs.dto.RedPacketDTO;
 import com.huijava.superiorjavablogs.dto.WxUsersDTO;
 import com.huijava.superiorjavablogs.entity.RedPacket;
 import com.huijava.superiorjavablogs.entity.WxUsers;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -155,7 +157,10 @@ public class WechatController {
         log.info("微信授权后跳转红包页面,用户红包信息:redPacket={}", redPacket);
         model.addAttribute("redPacket", redPacket);
         //获取已被领取的红包
-
+        //TODO 此处可以使用缓存
+        List<RedPacketDTO> redPacketDTOList = redPacketService.findRedPacketDTOList();
+        log.info("微信授权后跳转红包页面");
+        model.addAttribute("redPacketDTOList", redPacketDTOList);
         return new ModelAndView("wechat/index");
     }
 

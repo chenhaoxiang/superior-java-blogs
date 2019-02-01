@@ -3,6 +3,7 @@ package com.huijava.superiorjavablogs.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 public class RedPacketDTO {
@@ -14,7 +15,7 @@ public class RedPacketDTO {
     /**
      * 领取时间
      */
-    private Long getTime;
+    private Date getTime;
 
     /**
      * 昵称

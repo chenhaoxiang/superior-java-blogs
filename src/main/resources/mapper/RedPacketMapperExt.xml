@@ -19,22 +19,32 @@
         <!--
           WARNING - @mbg.generated
         -->
-        <result column="get_time" jdbcType="BIGINT" property="getTime"/>
+        <result column="get_time" jdbcType="TIMESTAMP" property="getTime"/>
         <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
         <result column="sum_money" jdbcType="DECIMAL" property="sumMoney"/>
     </resultMap>
 
     <!-- 另外还有一种简单方法就是直接通过red_packet连wx_users表获取到数据 -->
     <select id="findRedPacketDTOList" resultMap="RedPacketDTOResultMap">
-    select
+        select
 		wu.nickname nickname,
-		sum(arpc.money) sumMoney,
+		rp.sum_money sum_money,
+		rp.update_time get_time
+        from wx_users wu
+		LEFT JOIN red_packet rp on rp.wx_users_id = wu.id
+		order by rp.update_time desc
+  </select>
+
+    <!--
+        select
+		wu.nickname nickname,
+		sum(arpc.money) sum_money,
 		max(rpd.get_time) get_time
     from wx_users wu
 		LEFT JOIN red_packet_details rpd on rpd.wx_users_id = wu.id
 		LEFT JOIN ali_red_packet_config arpc on rpd.ali_red_packet_config_id=arpc.id
 		GROUP BY rpd.wx_users_id
 		order by get_time desc
-  </select>
+    -->
 
 </mapper>
