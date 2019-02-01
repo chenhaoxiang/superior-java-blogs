@@ -37,7 +37,7 @@
             </div>
             <div class="page-header">
                 <h1>
-                    实时获奖名单(人数:${})
+                    实时获奖名单(人数:${redPacketDTOList.size()})
                 </h1>
             </div>
             <table class="table table-condensed table-hover table-bordered">
