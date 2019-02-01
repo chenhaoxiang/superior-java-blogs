@@ -37,7 +37,13 @@
             </div>
             <div class="page-header">
                 <h1>
-                    实时获奖名单(人数:${redPacketDTOList.size()})
+                    实时获奖名单(人数:
+                    <#if redPacketDTOList??>
+                        ${redPacketDTOList?size}
+                    <#else >
+                        0
+                    </#if>
+                    )
                 </h1>
             </div>
             <table class="table table-condensed table-hover table-bordered">
@@ -55,19 +61,21 @@
                 </tr>
                 </thead>
                 <tbody>
-                <#list redPacketDTOList as redPacketDTO>
-                    <tr>
-                        <td>
-                            ${redPacketDTO.nickname}
-                        </td>
-                        <td>
-                            ${redPacketDTO.sumMoney}
-                        </td>
-                        <td>
-                            ${redPacketDTO.getTime?string('yyyy-MM-dd HH:mm:ss')}
-                        </td>
-                    </tr>
-                </#list>
+                <#if redPacketDTOList??>
+                    <#list redPacketDTOList as redPacketDTO>
+                        <tr>
+                            <td>
+                                ${redPacketDTO.nickname}
+                            </td>
+                            <td>
+                                ${redPacketDTO.sumMoney}
+                            </td>
+                            <td>
+                                ${redPacketDTO.getTime?string('yyyy-MM-dd HH:mm:ss')}
+                            </td>
+                        </tr>
+                    </#list>
+                </#if>
                 </tbody>
             </table>
         </div>
