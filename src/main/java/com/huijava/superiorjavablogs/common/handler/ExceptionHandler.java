@@ -6,6 +6,7 @@ package com.huijava.superiorjavablogs.common.handler;
 
 import com.huijava.superiorjavablogs.common.base.BaseController;
 import com.huijava.superiorjavablogs.common.enums.ResultCodeEnum;
+import com.huijava.superiorjavablogs.common.exception.SellException;
 import com.huijava.superiorjavablogs.common.exception.ServiceException;
 import com.huijava.superiorjavablogs.common.result.ResultModel;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,9 @@ public class ExceptionHandler extends BaseController implements HandlerException
             result = ResultModel.resultModel(ResultCodeEnum.FAIL.getCode(), ex.getMessage());
         } else if (ex instanceof NoHandlerFoundException) {
             result = ResultModel.resultModel(ResultCodeEnum.NOT_FOUND.getCode(), "接口 [" + request.getRequestURI() + "] 不存在");
+        } else if (ex instanceof SellException) {
+            SellException sellException = (SellException) ex;
+            result = ResultModel.resultModel(sellException.getCode(), sellException.getMessage());
         } else {
             result = ResultModel.resultModel(ResultCodeEnum.INTERNAL_SERVER_ERROR.getCode(), "接口 [" + request.getRequestURI() + "] 内部错误，请联系客服");
             String message;
