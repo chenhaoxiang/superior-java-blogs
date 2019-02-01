@@ -30,4 +30,10 @@ public class WxUsersServiceImpl extends AbstractService<WxUsers> implements WxUs
     public int insertSelective(WxUsers wxUsers) {
         return wxUsersMapper.insertSelective(wxUsers);
     }
+
+
+    @Override
+    public int updateByPrimaryKeySelective(WxUsers wxUsers) {
+        return wxUsersMapper.updateByPrimaryKeySelective(wxUsers);
+    }
 }

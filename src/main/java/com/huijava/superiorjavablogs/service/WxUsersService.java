@@ -19,4 +19,5 @@ public interface WxUsersService extends Service<WxUsers> {
 
     int insertSelective(WxUsers wxUsers);
 
+    int updateByPrimaryKeySelective(WxUsers wxUsers);
 }

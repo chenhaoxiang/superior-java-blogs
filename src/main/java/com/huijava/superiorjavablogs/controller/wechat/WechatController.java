@@ -61,6 +61,55 @@ public class WechatController {
         return new ModelAndView("wechat/not-followed");
     }
 
+
+    /**
+     * 领红包
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping({"getRedPacket"})
+    public ModelAndView getRedPacket(Model model) {
+        model.addAttribute("appid", wechatConfig.getAppId());
+        return new ModelAndView("wechat/get-red-packet");
+    }
+
+    /**
+     * 邀请
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping({"invitation"})
+    public ModelAndView invitation(Model model) {
+        model.addAttribute("appid", wechatConfig.getAppId());
+        return new ModelAndView("wechat/invitation");
+    }
+
+    /**
+     * 我的信息
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping({"myInfo"})
+    public ModelAndView myInfo(Model model, HttpServletRequest request) {
+        WxUsers wxUsers = SessionUtils.getAttribute(request, "wxUsers");
+        log.info("我的信息页面，wxUsers={}", wxUsers);
+        if (wxUsers == null) {
+            throw new SellException(ResultEnum.LOGIN_FAIL);
+        }
+        //根据id查询邀请人
+        WxUsers wxUsers1 = wxUsersService.selectById(wxUsers.getPid());
+        if (wxUsers1 != null) {
+            model.addAttribute("invitationName", wxUsers1.getNickname());
+        } else {
+            model.addAttribute("invitationName", "无邀请人");
+        }
+        model.addAttribute("wxUsersDTO", wxUsers);
+        return new ModelAndView("wechat/my-info");
+    }
+
     /**
      * 微信公众号
      * 微信授权获取openid
@@ -134,11 +183,17 @@ public class WechatController {
             log.warn("微信授权后跳转红包页面,openid为空,参数不正确");
             throw new SellException(ResultEnum.PARAM_ERROR.getCode(), ResultEnum.PARAM_ERROR.getMessage());
         }
-        //通过openid查询数据库
-        WxUsers wxUsers = wxUsersService.getWxUsersByOpenId(openid);
+        WxUsers wxUsers = SessionUtils.getAttribute(request, "wxUsers");
         log.info("微信授权后跳转红包页面，wxUsers={}", wxUsers);
+//        if(wxUsers==null){
+        //通过openid查询数据库
+//            wxUsers = wxUsersService.getWxUsersByOpenId(openid);
+//            log.info("微信授权后跳转红包页面，通过数据库查询的数据，wxUsers={}", wxUsers);
+//        }
         if (wxUsers == null) {
+            //确保session过期后，重新进入会获取到最新的信息，而不是数据库的数据
             wxUsers = getWxUsers(openid);
+            log.info("微信授权后跳转红包页面，第一次进入首页，wxUsers={}", wxUsers);
         }
 
         if (wxUsers.getSubscribe() == null || wxUsers.getSubscribe() == 0) {
@@ -175,47 +230,62 @@ public class WechatController {
             log.error("微信授权后跳转红包页面，获取的用户信息为null：openid={},accessToken={}", openid, accessToken);
             throw new SellException(ResultEnum.WECHAT_MP_ERROR.getCode(), ResultEnum.WECHAT_MP_ERROR.getMessage());
         }
-        //插入数据
-        int row = wxUsersService.insertSelective(nowWxUsers);
-        log.info("微信授权后跳转红包页面,影响行数为={},插入数据后用户信息为:{}", row, nowWxUsers);
-        if (row != 1) {
-            log.error("微信授权后跳转红包页面，插入数据失败：row={},nowWxUsers={}", row, nowWxUsers);
-            throw new SellException(ResultEnum.INSERT_DATA_FAILED.getCode(), ResultEnum.INSERT_DATA_FAILED.getMessage());
-        }
-        //使用id进行生成邀请码 - 缺点-需要再修改一次数据库数据
-        Integer id = nowWxUsers.getId();
-        String invitationCode = ConfusionIdUtils.encode(id.longValue());
-        RedPacket redPacket = new RedPacket();
-        redPacket.setWxUsersId(id);
-        redPacket.setInvitationCode(invitationCode);
-        redPacket.setMaxTimes(1);
 
-        row = redPacketService.insertSelective(redPacket);
-        log.info("微信授权后跳转红包页面,影响行数为={},插入红包数据后信息为:{}", row, redPacket);
-        if (row != 1) {
-            //有可能是邀请码重复了，进行重试一次
-            RedPacket packet = redPacketService.getByInvitationCode(invitationCode);
-            log.warn("微信授权后跳转红包页面,影响行数不为1，row={},通过邀请码查询的数据为:{},邀请码={}", row, redPacket, invitationCode);
-            if (packet == null) {
-                //重试一次
-                row = redPacketService.insertSelective(redPacket);
-                log.warn("微信授权后跳转红包页面,第一次插入红包数据失败，进行重试，row={},redPacket={}", row, redPacket);
-                if (row != 1) {
-                    log.error("微信授权后跳转红包页面，插入红包的数据失败：row={},nowWxUsers={},redPacket", row, nowWxUsers, redPacket);
-                    throw new SellException(ResultEnum.INSERT_DATA_FAILED.getCode(), ResultEnum.INSERT_DATA_FAILED.getMessage());
-                }
-            } else {
-                //说明红包数据邀请码重复了，这种情况下直接使用uuid进行作为邀请码
-                redPacket.setInvitationCode(UUID.randomUUID().toString().replace("-", ""));
-                row = redPacketService.insertSelective(redPacket);
-                log.warn("微信授权后跳转红包页面,第一次插入红包数据由于邀请码重复失败，进行重试，row={},redPacket={}", row, redPacket);
-                if (row != 1) {
-                    log.error("微信授权后跳转红包页面，邀请码重复后，再次插入红包的数据失败：row={},nowWxUsers={},redPacket", row, nowWxUsers, redPacket);
-                    throw new SellException(ResultEnum.INSERT_DATA_FAILED.getCode(), ResultEnum.INSERT_DATA_FAILED.getMessage());
+        WxUsers wxUsers = wxUsersService.getWxUsersByOpenId(openid);
+        if (wxUsers == null) {
+            //插入数据
+            int row = wxUsersService.insertSelective(nowWxUsers);
+            log.info("微信授权后跳转红包页面,影响行数为={},插入数据后用户信息为:{}", row, nowWxUsers);
+            if (row != 1) {
+                log.error("微信授权后跳转红包页面，插入数据失败：row={},nowWxUsers={}", row, nowWxUsers);
+                throw new SellException(ResultEnum.INSERT_DATA_FAILED.getCode(), ResultEnum.INSERT_DATA_FAILED.getMessage());
+            }
+
+            //使用id进行生成邀请码 - 缺点-需要再修改一次数据库数据
+            Integer id = nowWxUsers.getId();
+            String invitationCode = ConfusionIdUtils.encode(id.longValue());
+            RedPacket redPacket = new RedPacket();
+            redPacket.setWxUsersId(id);
+            redPacket.setInvitationCode(invitationCode);
+            redPacket.setMaxTimes(1);
+
+            row = redPacketService.insertSelective(redPacket);
+            log.info("微信授权后跳转红包页面,影响行数为={},插入红包数据后信息为:{}", row, redPacket);
+            if (row != 1) {
+                //有可能是邀请码重复了，进行重试一次
+                RedPacket packet = redPacketService.getByInvitationCode(invitationCode);
+                log.warn("微信授权后跳转红包页面,影响行数不为1，row={},通过邀请码查询的数据为:{},邀请码={}", row, redPacket, invitationCode);
+                if (packet == null) {
+                    //重试一次
+                    row = redPacketService.insertSelective(redPacket);
+                    log.warn("微信授权后跳转红包页面,第一次插入红包数据失败，进行重试，row={},redPacket={}", row, redPacket);
+                    if (row != 1) {
+                        log.error("微信授权后跳转红包页面，插入红包的数据失败：row={},nowWxUsers={},redPacket", row, nowWxUsers, redPacket);
+                        throw new SellException(ResultEnum.INSERT_DATA_FAILED.getCode(), ResultEnum.INSERT_DATA_FAILED.getMessage());
+                    }
+                } else {
+                    //说明红包数据邀请码重复了，这种情况下直接使用uuid进行作为邀请码
+                    redPacket.setInvitationCode(UUID.randomUUID().toString().replace("-", ""));
+                    row = redPacketService.insertSelective(redPacket);
+                    log.warn("微信授权后跳转红包页面,第一次插入红包数据由于邀请码重复失败，进行重试，row={},redPacket={}", row, redPacket);
+                    if (row != 1) {
+                        log.error("微信授权后跳转红包页面，邀请码重复后，再次插入红包的数据失败：row={},nowWxUsers={},redPacket", row, nowWxUsers, redPacket);
+                        throw new SellException(ResultEnum.INSERT_DATA_FAILED.getCode(), ResultEnum.INSERT_DATA_FAILED.getMessage());
+                    }
                 }
             }
+        } else {
+            //更新数据
+            nowWxUsers.setId(wxUsers.getId());
+            int row = wxUsersService.updateByPrimaryKeySelective(nowWxUsers);
+            log.info("微信授权后跳转红包页面,影响行数为={},更改数据后用户信息为:{}", row, nowWxUsers);
+            if (row != 1) {
+                //不进行处理
+                log.error("微信授权后跳转红包页面，更改数据失败：row={},nowWxUsers={}", row, nowWxUsers);
+            }
         }
-        //插入用户信息到表中
+        //查询一次最新数据
+        nowWxUsers = wxUsersService.selectById(nowWxUsers.getId());
         return nowWxUsers;
     }
 
