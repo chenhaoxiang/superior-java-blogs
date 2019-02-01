@@ -1,9 +1,13 @@
 package com.huijava.superiorjavablogs.entity;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "red_packet_details")
+@ToString
+
 public class RedPacketDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

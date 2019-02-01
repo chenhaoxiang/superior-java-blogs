@@ -33,14 +33,14 @@ public class RedPacketServiceImpl extends AbstractService<RedPacket> implements 
     @Override
     public RedPacket getByInvitationCode(String invitationCode) {
         Example example = new Example(RedPacket.class);
-        example.createCriteria().andCondition("invitation_code = " + invitationCode);
+        example.createCriteria().andCondition("invitation_code = ", invitationCode);
         return redPacketMapper.selectOneByExample(example);
     }
 
     @Override
     public RedPacket getByWxUsersId(Integer wxUsersId) {
         Example example = new Example(RedPacket.class);
-        example.createCriteria().andCondition("wx_users_id = " + wxUsersId);
+        example.createCriteria().andCondition("wx_users_id = ", wxUsersId);
         return redPacketMapper.selectOneByExample(example);
     }
 

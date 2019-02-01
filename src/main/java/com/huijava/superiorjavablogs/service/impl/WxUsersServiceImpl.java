@@ -19,9 +19,10 @@ public class WxUsersServiceImpl extends AbstractService<WxUsers> implements WxUs
     @Autowired
     private WxUsersMapper wxUsersMapper;
 
+    @Override
     public WxUsers getWxUsersByOpenId(String openid) {
         Example example = new Example(WxUsers.class);
-        example.createCriteria().andCondition("openid = " + openid);
+        example.createCriteria().andCondition("openid=", openid);
         return wxUsersMapper.selectOneByExample(example);
     }
 

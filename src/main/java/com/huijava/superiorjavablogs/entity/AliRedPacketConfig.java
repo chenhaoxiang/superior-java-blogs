@@ -1,10 +1,14 @@
 package com.huijava.superiorjavablogs.entity;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Table(name = "ali_red_packet_config")
+@ToString
+
 public class AliRedPacketConfig {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
