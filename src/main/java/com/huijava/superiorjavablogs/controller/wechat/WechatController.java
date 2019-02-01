@@ -141,7 +141,7 @@ public class WechatController {
             wxUsers = getWxUsers(openid);
         }
 
-        if (wxUsers.getSubscribe() == 0) {
+        if (wxUsers.getSubscribe() == null || wxUsers.getSubscribe() == 0) {
             //没有关注公众号 - 返回让用户关注公众号的提示页面
             log.info("微信授权后跳转红包页面，用户没有关注公众号，用户信息:{}", wxUsers);
             return new ModelAndView("wechat/not-followed");
