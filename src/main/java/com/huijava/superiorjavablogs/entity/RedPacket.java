@@ -1,6 +1,7 @@
 package com.huijava.superiorjavablogs.entity;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Table(name = "red_packet")
@@ -43,6 +44,12 @@ public class RedPacket {
      */
     @Column(name = "invitation_code")
     private String invitationCode;
+
+    /**
+     * 已领金额
+     */
+    @Column(name = "sum_money")
+    private BigDecimal sumMoney;
 
     /**
      * @return id
@@ -164,5 +171,23 @@ public class RedPacket {
      */
     public void setInvitationCode(String invitationCode) {
         this.invitationCode = invitationCode;
+    }
+
+    /**
+     * 获取已领金额
+     *
+     * @return sum_money - 已领金额
+     */
+    public BigDecimal getSumMoney() {
+        return sumMoney;
+    }
+
+    /**
+     * 设置已领金额
+     *
+     * @param sumMoney 已领金额
+     */
+    public void setSumMoney(BigDecimal sumMoney) {
+        this.sumMoney = sumMoney;
     }
 }

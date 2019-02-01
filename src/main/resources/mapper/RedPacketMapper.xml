@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huijava.superiorjavablogs.mapper.RedPacketMapper">
-    <resultMap id="BaseResultMap" type="com.huijava.superiorjavablogs.entity.RedPacket">
-        <!--
-          WARNING - @mbg.generated
-        -->
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="wx_users_id" jdbcType="INTEGER" property="wxUsersId"/>
-        <result column="times" jdbcType="INTEGER" property="times"/>
-        <result column="max_times" jdbcType="INTEGER" property="maxTimes"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="invitation_code" jdbcType="VARCHAR" property="invitationCode"/>
-    </resultMap>
+  <resultMap id="BaseResultMap" type="com.huijava.superiorjavablogs.entity.RedPacket">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="wx_users_id" jdbcType="INTEGER" property="wxUsersId"/>
+    <result column="times" jdbcType="INTEGER" property="times"/>
+    <result column="max_times" jdbcType="INTEGER" property="maxTimes"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="invitation_code" jdbcType="VARCHAR" property="invitationCode"/>
+    <result column="sum_money" jdbcType="DECIMAL" property="sumMoney"/>
+  </resultMap>
 </mapper>

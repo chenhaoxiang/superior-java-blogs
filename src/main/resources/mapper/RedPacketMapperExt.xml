@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huijava.superiorjavablogs.mapper.RedPacketMapperExt">
+    <resultMap id="BaseResultMap" type="com.huijava.superiorjavablogs.entity.RedPacket">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="wx_users_id" jdbcType="INTEGER" property="wxUsersId"/>
+        <result column="times" jdbcType="INTEGER" property="times"/>
+        <result column="max_times" jdbcType="INTEGER" property="maxTimes"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="invitation_code" jdbcType="VARCHAR" property="invitationCode"/>
+        <result column="sum_money" jdbcType="DECIMAL" property="sumMoney"/>
+    </resultMap>
+
+    <resultMap id="RedPacketDTOResultMap" type="com.huijava.superiorjavablogs.dto.RedPacketDTO">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="get_time" jdbcType="BIGINT" property="getTime"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="sum_money" jdbcType="DECIMAL" property="sumMoney"/>
+    </resultMap>
+
+    <!-- 另外还有一种简单方法就是直接通过red_packet连wx_users表获取到数据 -->
+    <select id="findRedPacketDTOList" resultMap="RedPacketDTOResultMap">
+    select
+		wu.nickname nickname,
+		sum(arpc.money) sumMoney,
+		max(rpd.get_time) get_time
+    from wx_users wu
+		LEFT JOIN red_packet_details rpd on rpd.wx_users_id = wu.id
+		LEFT JOIN ali_red_packet_config arpc on rpd.ali_red_packet_config_id=arpc.id
+		GROUP BY rpd.wx_users_id
+		order by get_time desc
+  </select>
+
+</mapper>

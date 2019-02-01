@@ -5,11 +5,13 @@ import com.huijava.superiorjavablogs.common.enums.ResultEnum;
 import com.huijava.superiorjavablogs.common.exception.SellException;
 import com.huijava.superiorjavablogs.configurer.WechatConfig;
 import com.huijava.superiorjavablogs.configurer.WxMpConfiguration;
+import com.huijava.superiorjavablogs.dto.WxUsersDTO;
 import com.huijava.superiorjavablogs.entity.RedPacket;
 import com.huijava.superiorjavablogs.entity.WxUsers;
 import com.huijava.superiorjavablogs.service.RedPacketService;
 import com.huijava.superiorjavablogs.service.WxUsersService;
 import com.huijava.superiorjavablogs.util.ConfusionIdUtils;
+import com.huijava.superiorjavablogs.util.SessionUtils;
 import com.huijava.superiorjavablogs.util.WechatUtils;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -17,6 +19,7 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.UUID;
@@ -121,7 +125,8 @@ public class WechatController {
      * @return
      */
     @RequestMapping("/userInfo")
-    public ModelAndView userInfo(@RequestParam("openid") String openid, Model model) {
+    public ModelAndView userInfo(@RequestParam("openid") String openid,
+                                 HttpServletRequest request, Model model) {
         log.info("微信授权后跳转红包页面，openid={}", openid);
         if (StringUtils.isBlank(openid)) {
             log.warn("微信授权后跳转红包页面,openid为空,参数不正确");
@@ -139,11 +144,19 @@ public class WechatController {
             log.info("微信授权后跳转红包页面，用户没有关注公众号，用户信息:{}", wxUsers);
             return new ModelAndView("wechat/not-followed");
         }
-        //3.展示该用户获取的口令
-
+        SessionUtils.setAttribute(request, "wxUsers", wxUsers);
+        //3.设置用户信息
+        WxUsersDTO wxUsersDTO = new WxUsersDTO();
+        BeanUtils.copyProperties(wxUsers, wxUsersDTO);
+        log.info("微信授权后跳转红包页面,用户信息:wxUsersDTO={},wxUsers={}", wxUsersDTO, wxUsers);
+        model.addAttribute("wxUsersDTO", wxUsersDTO);
         //4.展示该用户剩余可获取红包口令次数
+        RedPacket redPacket = redPacketService.getByWxUsersId(wxUsers.getId());
+        log.info("微信授权后跳转红包页面,用户红包信息:redPacket={}", redPacket);
+        model.addAttribute("redPacket", redPacket);
+        //获取已被领取的红包
 
-        return new ModelAndView("");
+        return new ModelAndView("wechat/index");
     }
 
     private WxUsers getWxUsers(String openid) {
