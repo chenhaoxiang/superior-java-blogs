@@ -32,6 +32,7 @@
 		rp.update_time get_time
         from wx_users wu
 		LEFT JOIN red_packet rp on rp.wx_users_id = wu.id
+		where rp.sum_money &lt;&gt; 0
 		order by rp.update_time desc
   </select>
 

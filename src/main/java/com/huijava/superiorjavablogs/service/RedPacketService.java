@@ -31,6 +31,11 @@ public interface RedPacketService extends Service<RedPacket> {
      */
     RedPacket getByWxUsersId(Integer wxUsersId);
 
+    /**
+     * 获取金额不为0的用户数据
+     *
+     * @return
+     */
     List<RedPacketDTO> findRedPacketDTOList();
 
 }
