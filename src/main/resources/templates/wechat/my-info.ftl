@@ -83,6 +83,14 @@
                         ${wxUsersDTO.province}
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        城市
+                    </td>
+                    <td>
+                        ${wxUsersDTO.city}
+                    </td>
+                </tr>
 
                 <tr>
                     <td>
