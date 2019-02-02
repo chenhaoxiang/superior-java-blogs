@@ -117,20 +117,23 @@ public class WechatController {
                 if (wxUsers1 == null) {
                     model.addAttribute("message", "上级信息为空");
                 } else {
-                    if (wxUsers1.getSubscribeTime() < time) {
-                        //将上级修改为该用户id
-                        WxUsers wxUsers2 = new WxUsers();
-                        wxUsers2.setId(wxUsers.getId());
-                        wxUsers2.setPid(wxUsers1.getId());
-                        int rows = wxUsersService.bindingWxUsersPidAndAddTimes(wxUsers2, redPacket);
-                        if (rows == 1) {
-                            model.addAttribute("message", "绑定成功");
-                        } else {
-                            model.addAttribute("message", "绑定失败");
-                        }
+                    if (wxUsers.getId().equals(wxUsers1.getId())) {
+                        model.addAttribute("message", "邀请人无法为自己");
                     } else {
-                        model.addAttribute("message", "对方的关注时间大于2019年2月4日，无法邀请人");
-                        model.addAttribute("isNewUser", 1);
+                        if (wxUsers1.getSubscribeTime() < time) {
+                            //将上级修改为该用户id
+                            WxUsers wxUsers2 = new WxUsers();
+                            wxUsers2.setId(wxUsers.getId());
+                            wxUsers2.setPid(wxUsers1.getId());
+                            int rows = wxUsersService.bindingWxUsersPidAndAddTimes(wxUsers2, redPacket);
+                            if (rows == 1) {
+                                model.addAttribute("message", "绑定成功");
+                            } else {
+                                model.addAttribute("message", "绑定失败");
+                            }
+                        } else {
+                            model.addAttribute("message", "对方的关注时间大于2019年2月4日，无法邀请人");
+                        }
                     }
 
                 }
