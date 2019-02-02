@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huijava.superiorjavablogs.mapper.SystemConfigMapper">
+    <resultMap id="BaseResultMap" type="com.huijava.superiorjavablogs.entity.SystemConfig">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="key_name" jdbcType="VARCHAR" property="keyName"/>
+        <result column="describe" jdbcType="VARCHAR" property="describe"/>
+        <result column="int_value" jdbcType="INTEGER" property="intValue"/>
+        <result column="string_value" jdbcType="VARCHAR" property="stringValue"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="start_time" jdbcType="BIGINT" property="startTime"/>
+        <result column="end_time" jdbcType="BIGINT" property="endTime"/>
+    </resultMap>
+</mapper>

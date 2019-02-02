@@ -6,9 +6,11 @@ import com.huijava.superiorjavablogs.common.exception.SellException;
 import com.huijava.superiorjavablogs.configurer.WechatConfig;
 import com.huijava.superiorjavablogs.configurer.WxMpConfiguration;
 import com.huijava.superiorjavablogs.dto.RedPacketDTO;
+import com.huijava.superiorjavablogs.dto.RedPacketDetailsDTO;
 import com.huijava.superiorjavablogs.dto.WxUsersDTO;
 import com.huijava.superiorjavablogs.entity.RedPacket;
 import com.huijava.superiorjavablogs.entity.WxUsers;
+import com.huijava.superiorjavablogs.service.RedPacketDetailsService;
 import com.huijava.superiorjavablogs.service.RedPacketService;
 import com.huijava.superiorjavablogs.service.WxUsersService;
 import com.huijava.superiorjavablogs.util.ConfusionIdUtils;
@@ -30,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.UUID;
@@ -48,6 +51,8 @@ public class WechatController {
 
     @Autowired
     private RedPacketService redPacketService;
+    @Autowired
+    private RedPacketDetailsService redPacketDetailsService;
 
     /**
      * 访问微信主页
@@ -69,8 +74,42 @@ public class WechatController {
      * @return
      */
     @RequestMapping({"getRedPacket"})
-    public ModelAndView getRedPacket(Model model) {
-        model.addAttribute("appid", wechatConfig.getAppId());
+    public ModelAndView getRedPacket(@RequestParam(value = "getRedPacket", required = false, defaultValue = "0") String getRedPacket,
+                                     Model model, HttpServletRequest request) {
+        WxUsers wxUsers = SessionUtils.getAttribute(request, "wxUsers");
+        log.info("获取红包信息页面，wxUsers={}", wxUsers);
+        if (wxUsers == null) {
+            throw new SellException(ResultEnum.LOGIN_FAIL);
+        }
+        if ("1".equals(getRedPacket)) {
+            //获取红包开始
+            //判断领取次数
+            RedPacket redPacket = redPacketService.getByWxUsersId(wxUsers.getId());
+            log.info("获取红包信息页面，wxUsers={},redPacket={}", wxUsers, redPacket);
+            if (redPacket.getTimes() < redPacket.getMaxTimes()) {
+                //尚可以领取红包
+                String message = redPacketService.getRedPacket(redPacket, wxUsers);
+                model.addAttribute("message", message);
+            } else {
+                model.addAttribute("message", "尚无可领取次数");
+            }
+        }
+        //获取红包信息
+        List<RedPacketDetailsDTO> redPacketDetailsDTOList = redPacketDetailsService.findRedPacketDetailsDTOList(wxUsers.getId());
+        log.info("获取红包信息页面,redPacketDetailsDTOList={}", redPacketDetailsDTOList);
+        model.addAttribute("redPacketDetailsDTOList", redPacketDetailsDTOList);
+        BigDecimal sumMoney = new BigDecimal(0);
+        for (RedPacketDetailsDTO redPacketDetailsDTO : redPacketDetailsDTOList) {
+            sumMoney = sumMoney.add(redPacketDetailsDTO.getMoney());
+        }
+        model.addAttribute("sumMoney", sumMoney);
+        model.addAttribute("wxUsersDTO", wxUsers);
+
+        //展示该用户剩余可获取红包口令次数
+        RedPacket redPacket = redPacketService.getByWxUsersId(wxUsers.getId());
+        log.info("获取红包信息页面,用户红包信息:redPacket={}", redPacket);
+        model.addAttribute("redPacket", redPacket);
+
         return new ModelAndView("wechat/get-red-packet");
     }
 

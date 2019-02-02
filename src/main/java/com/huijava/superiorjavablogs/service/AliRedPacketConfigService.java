@@ -10,4 +10,16 @@ import com.huijava.superiorjavablogs.entity.AliRedPacketConfig;
  */
 public interface AliRedPacketConfigService extends Service<AliRedPacketConfig> {
 
+    Integer getMaxId(Integer id, Integer maxId);
+
+    Integer getMinId(Integer id, Integer minId);
+
+    /**
+     * 修改领取红包记录
+     *
+     * @param redId
+     * @param status
+     * @return
+     */
+    Integer updateStatusByIdAndVersion(Integer redId, Integer status, Integer version);
 }

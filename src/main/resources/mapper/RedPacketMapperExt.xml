@@ -48,4 +48,15 @@
 		order by get_time desc
     -->
 
+
+    <update id="updateTimesAndSumMoneyByWxUsersId">
+        UPDATE red_packet
+        <set>
+            sum_money = sum_money + #{money},
+            times = times+1
+        </set>
+        where wx_users_id = #{wxUsersId}
+        and times &lt; max_times
+    </update>
+
 </mapper>

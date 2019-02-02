@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Table(name = "ali_red_packet_config")
 @ToString
-
 public class AliRedPacketConfig {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

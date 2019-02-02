@@ -3,6 +3,7 @@ package com.huijava.superiorjavablogs.service;
 import com.huijava.superiorjavablogs.common.base.Service;
 import com.huijava.superiorjavablogs.dto.RedPacketDTO;
 import com.huijava.superiorjavablogs.entity.RedPacket;
+import com.huijava.superiorjavablogs.entity.WxUsers;
 
 import java.util.List;
 
@@ -38,4 +39,8 @@ public interface RedPacketService extends Service<RedPacket> {
      */
     List<RedPacketDTO> findRedPacketDTOList();
 
+    /**
+     * 获取红包
+     */
+    String getRedPacket(RedPacket redPacket, WxUsers wxUsers);
 }
