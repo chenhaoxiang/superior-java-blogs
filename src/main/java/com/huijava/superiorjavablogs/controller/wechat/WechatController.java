@@ -9,9 +9,11 @@ import com.huijava.superiorjavablogs.dto.RedPacketDTO;
 import com.huijava.superiorjavablogs.dto.RedPacketDetailsDTO;
 import com.huijava.superiorjavablogs.dto.WxUsersDTO;
 import com.huijava.superiorjavablogs.entity.RedPacket;
+import com.huijava.superiorjavablogs.entity.SystemConfig;
 import com.huijava.superiorjavablogs.entity.WxUsers;
 import com.huijava.superiorjavablogs.service.RedPacketDetailsService;
 import com.huijava.superiorjavablogs.service.RedPacketService;
+import com.huijava.superiorjavablogs.service.SystemConfigService;
 import com.huijava.superiorjavablogs.service.WxUsersService;
 import com.huijava.superiorjavablogs.util.ConfusionIdUtils;
 import com.huijava.superiorjavablogs.util.DateUtils;
@@ -55,6 +57,8 @@ public class WechatController {
     private RedPacketService redPacketService;
     @Autowired
     private RedPacketDetailsService redPacketDetailsService;
+    @Autowired
+    private SystemConfigService systemConfigService;
 
     /**
      * 访问微信主页
@@ -87,8 +91,13 @@ public class WechatController {
         //只有在2月4日之前关注的用户才能邀请下级 - 且不能绑定上级
         long time = 1549209600L;
         try {
-            time = DateUtils.parseDate("2019-02-04 00:00:00", "yyyy-MM-dd HH:mm:ss").getTime() / 1000;
-        } catch (ParseException e) {
+            //获取配置的时间
+            SystemConfig systemConfig = systemConfigService.getByKeyName("old-user-attention-time");
+            log.info("请求绑定上级，配置时间的字符串:{}", systemConfig);
+            if (systemConfig != null) {
+                time = DateUtils.parseDate(systemConfig.getStringValue().trim(), "yyyy-MM-dd HH:mm:ss").getTime() / 1000;
+            }
+        } catch (Exception e) {
             log.warn("请求绑定上级,time={},wxUsers={}", time, wxUsers);
         }
 
@@ -214,7 +223,12 @@ public class WechatController {
         //只有在2月4日之前关注的用户才能邀请下级 - 且不能绑定上级
         long time = 1549209600L;
         try {
-            time = DateUtils.parseDate("2019-02-04 00:00:00", "yyyy-MM-dd HH:mm:ss").getTime() / 1000;
+            //获取配置的时间
+            SystemConfig systemConfig = systemConfigService.getByKeyName("old-user-attention-time");
+            log.info("邀请页面，配置时间的字符串:{}", systemConfig);
+            if (systemConfig != null) {
+                time = DateUtils.parseDate(systemConfig.getStringValue().trim(), "yyyy-MM-dd HH:mm:ss").getTime() / 1000;
+            }
         } catch (ParseException e) {
             log.warn("邀请页面,time={},wxUsers={}", time, wxUsers);
         }
