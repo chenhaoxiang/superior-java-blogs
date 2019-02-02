@@ -16,7 +16,12 @@
 
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <span class="label label-primary">邀请人数:${size}个</span>
+                    <span class="label label-primary">邀请人数:${wxUsersDTOList?size}</span>
+                    <#if myPName??>
+                        <span class="label label-danger">上级昵称:${myPName!''}</span>
+                    <#else >
+                        <span class="label label-success">上级昵称:${myPName!'无'}</span>
+                    </#if>
                 </div>
             </div>
 
@@ -30,17 +35,23 @@
                 </div>
             </div>
 
-            <#if isOldUser??>
+            <#if isNewUser??>
                 <div class="row clearfix">
                     <div class="col-md-12 column">
                         <form role="form" action="/wechat/submitInvitationCode">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">邀请码:</label>
-                                <input type="text" class="form-control" id="invitationCode"/>
+                                <input type="text" class="form-control" id="invitationCode" name="invitationCode"/>
                             </div>
                             <button type="submit" class="btn btn-default">提交</button>
                         </form>
                     </div>
+                </div>
+            </#if>
+
+            <#if message??>
+                <div style="color: red">
+                    <p>${message}</p>
                 </div>
             </#if>
 
@@ -62,29 +73,23 @@
                     </th>
 
                     <th>
-                        领取金额
-                    </th>
-                    <th>
-                        最后登录时间
+                        上次更新时间
                     </th>
                 </tr>
                 </thead>
                 <tbody>
 
-                <#if redPacketDetailsDTOList??>
-                    <#list redPacketDetailsDTOList as redPacketDetailsDTO>
+                <#if wxUsersDTOList??>
+                    <#list wxUsersDTOList as wxUsersDTO>
                         <tr>
                             <td>
-                                ${redPacketDetailsDTO.password}
+                                ${wxUsersDTO.nickname}
                             </td>
                             <td>
-                                ${redPacketDetailsDTO.money}
+                                ${wxUsersDTO.openid}
                             </td>
                             <td>
-                                ${redPacketDetailsDTO.createTime?string('yyyy-MM-dd HH:mm:ss')}
-                            </td>
-                            <td>
-                                ${redPacketDetailsDTO.getTime}
+                                ${wxUsersDTO.updateTime?string('yyyy-MM-dd HH:mm:ss')}
                             </td>
                         </tr>
                     </#list>

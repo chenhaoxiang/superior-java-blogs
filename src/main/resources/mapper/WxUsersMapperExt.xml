@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huijava.superiorjavablogs.mapper.WxUsersMapperExt">
+    <resultMap id="BaseResultMap" type="com.huijava.superiorjavablogs.entity.WxUsers">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="subscribe" jdbcType="TINYINT" property="subscribe"/>
+        <result column="openid" jdbcType="VARCHAR" property="openid"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="sex" jdbcType="TINYINT" property="sex"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="language" jdbcType="VARCHAR" property="language"/>
+        <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl"/>
+        <result column="subscribe_time" jdbcType="BIGINT" property="subscribeTime"/>
+        <result column="unionid" jdbcType="VARCHAR" property="unionid"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="groupid" jdbcType="INTEGER" property="groupid"/>
+        <result column="subscribe_scene" jdbcType="VARCHAR" property="subscribeScene"/>
+        <result column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="WxUsersDTOResultMap" type="com.huijava.superiorjavablogs.dto.WxUsersDTO">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="openid" jdbcType="VARCHAR" property="openid"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="language" jdbcType="VARCHAR" property="language"/>
+        <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl"/>
+        <result column="subscribe_time" jdbcType="BIGINT" property="subscribeTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+
+    <select id="findWxUsersDTOByPid" resultMap="WxUsersDTOResultMap">
+        select
+        openid,nickname,language,headimgurl,subscribe_time,update_time
+        from wx_users
+		where pid = #{pid}
+		order by id desc
+  </select>
+
+
+</mapper>

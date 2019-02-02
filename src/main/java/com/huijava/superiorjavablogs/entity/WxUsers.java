@@ -1,12 +1,9 @@
 package com.huijava.superiorjavablogs.entity;
 
-import lombok.ToString;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "wx_users")
-@ToString
 public class WxUsers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +38,11 @@ public class WxUsers {
      * 用户所在国家
      */
     private String country;
+
+    /**
+     * 用户状态 0-正常，1-禁用
+     */
+    private Byte status;
 
     /**
      * 用户所在省份
@@ -221,6 +223,24 @@ public class WxUsers {
      */
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    /**
+     * 获取用户状态 0-正常，1-禁用
+     *
+     * @return status - 用户状态 0-正常，1-禁用
+     */
+    public Byte getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置用户状态 0-正常，1-禁用
+     *
+     * @param status 用户状态 0-正常，1-禁用
+     */
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     /**

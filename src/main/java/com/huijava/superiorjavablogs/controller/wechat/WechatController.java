@@ -14,6 +14,7 @@ import com.huijava.superiorjavablogs.service.RedPacketDetailsService;
 import com.huijava.superiorjavablogs.service.RedPacketService;
 import com.huijava.superiorjavablogs.service.WxUsersService;
 import com.huijava.superiorjavablogs.util.ConfusionIdUtils;
+import com.huijava.superiorjavablogs.util.DateUtils;
 import com.huijava.superiorjavablogs.util.SessionUtils;
 import com.huijava.superiorjavablogs.util.WechatUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,6 +68,85 @@ public class WechatController {
         return new ModelAndView("wechat/not-followed");
     }
 
+    /**
+     * 请求绑定上级
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping({"submitInvitationCode"})
+    public ModelAndView submitInvitationCode(Model model, HttpServletRequest request,
+                                             @RequestParam("invitationCode") String invitationCode) {
+        WxUsers wxUsers = SessionUtils.getAttribute(request, "wxUsers");
+        log.info("请求绑定上级，wxUsers={}", wxUsers);
+        if (wxUsers == null) {
+            throw new SellException(ResultEnum.LOGIN_FAIL);
+        }
+        wxUserCheck(wxUsers);
+
+        //只有在2月4日之前关注的用户才能邀请下级 - 且不能绑定上级
+        long time = 1549209600L;
+        try {
+            time = DateUtils.parseDate("2019-02-04 00:00:00", "yyyy-MM-dd HH:mm:ss").getTime() / 1000;
+        } catch (ParseException e) {
+            log.warn("请求绑定上级,time={},wxUsers={}", time, wxUsers);
+        }
+
+        if (wxUsers.getSubscribeTime() > time && wxUsers.getPid() == 0) {
+            //关注时间大于这个点的且没有填写邀请人的才能填写邀请人
+            model.addAttribute("isNewUser", 1);
+        }
+
+        if (wxUsers.getPid() == 0) {
+            RedPacket redPacket = redPacketService.getByInvitationCode(invitationCode);
+            log.info("请求绑定上级,通过邀请码获取信息,redPacket={},wxUsers={},invitationCode={}", redPacket, wxUsers, invitationCode);
+            if (redPacket == null || redPacket.getWxUsersId() == null) {
+                model.addAttribute("message", "邀请码填写错误:" + invitationCode);
+            } else {
+                WxUsers wxUsers1 = wxUsersService.selectById(redPacket.getWxUsersId());
+                log.info("请求绑定上级,获取的上级信息，redPacket={},上级用户信息={},wxUsers={},invitationCode={}", redPacket, wxUsers1, wxUsers, invitationCode);
+                if (wxUsers1 == null) {
+                    model.addAttribute("message", "上级信息为空");
+                } else {
+                    if (wxUsers1.getSubscribeTime() < time) {
+                        //将上级修改为该用户id
+                        WxUsers wxUsers2 = new WxUsers();
+                        wxUsers2.setId(wxUsers.getId());
+                        wxUsers2.setPid(wxUsers1.getId());
+                        int rows = wxUsersService.bindingWxUsersPidAndAddTimes(wxUsers2, redPacket);
+                        if (rows == 1) {
+                            model.addAttribute("message", "绑定成功");
+                        } else {
+                            model.addAttribute("message", "绑定失败");
+                        }
+                    } else {
+                        model.addAttribute("message", "对方的关注时间大于2019年2月4日，无法邀请人");
+                        model.addAttribute("isNewUser", 1);
+                    }
+
+                }
+            }
+        }
+
+        //获取上级
+        if (wxUsers.getPid() != 0) {
+            WxUsers wxUsers2 = wxUsersService.selectById(wxUsers.getPid());
+            log.info("请求绑定上级，上级信息:{},wxUsers={}", wxUsers2, wxUsers);
+            if (wxUsers2 != null) {
+                model.addAttribute("myPName", wxUsers2.getNickname());
+            }
+        }
+
+        //获取下级人数
+        List<WxUsersDTO> wxUsersDTOList = wxUsersService.findWxUsersDTOByPid(wxUsers.getId());
+        log.info("请求绑定上级，下级信息:{},wxUsers={}", wxUsersDTOList, wxUsers);
+
+        model.addAttribute("wxUsersDTOList", wxUsersDTOList);
+        model.addAttribute("wxUsersDTO", wxUsers);
+
+        return new ModelAndView("wechat/invitation");
+    }
+
 
     /**
      * 领红包
@@ -81,6 +162,8 @@ public class WechatController {
         if (wxUsers == null) {
             throw new SellException(ResultEnum.LOGIN_FAIL);
         }
+        wxUserCheck(wxUsers);
+
         if ("1".equals(getRedPacket)) {
             //获取红包开始
             //判断领取次数
@@ -126,10 +209,35 @@ public class WechatController {
         if (wxUsers == null) {
             throw new SellException(ResultEnum.LOGIN_FAIL);
         }
-//        if(wxUsers.get)
+        wxUserCheck(wxUsers);
+
+        //只有在2月4日之前关注的用户才能邀请下级 - 且不能绑定上级
+        long time = 1549209600L;
+        try {
+            time = DateUtils.parseDate("2019-02-04 00:00:00", "yyyy-MM-dd HH:mm:ss").getTime() / 1000;
+        } catch (ParseException e) {
+            log.warn("邀请页面,time={},wxUsers={}", time, wxUsers);
+        }
+        if (wxUsers.getSubscribeTime() > time && wxUsers.getPid() == 0) {
+            //关注时间大于这个点的才能邀请人
+            model.addAttribute("isNewUser", 1);
+        }
+
+        //获取上级
+        if (wxUsers.getPid() != 0) {
+            WxUsers wxUsers1 = wxUsersService.selectById(wxUsers.getPid());
+            log.info("邀请页面，上级信息:{},wxUsers={}", wxUsers1, wxUsers);
+            if (wxUsers1 != null) {
+                model.addAttribute("myPName", wxUsers1.getNickname());
+            }
+        }
+
         //获取下级人数
+        List<WxUsersDTO> wxUsersDTOList = wxUsersService.findWxUsersDTOByPid(wxUsers.getId());
+        log.info("邀请页面，下级信息:{},wxUsers={}", wxUsersDTOList, wxUsers);
 
-
+        model.addAttribute("wxUsersDTOList", wxUsersDTOList);
+        model.addAttribute("wxUsersDTO", wxUsers);
         return new ModelAndView("wechat/invitation");
     }
 
@@ -146,6 +254,8 @@ public class WechatController {
         if (wxUsers == null) {
             throw new SellException(ResultEnum.LOGIN_FAIL);
         }
+        wxUserCheck(wxUsers);
+
         //根据id查询邀请人
         WxUsers wxUsers1 = wxUsersService.selectById(wxUsers.getPid());
         if (wxUsers1 != null) {
@@ -223,13 +333,9 @@ public class WechatController {
      * @return
      */
     @RequestMapping("/userInfo")
-    public ModelAndView userInfo(@RequestParam("openid") String openid,
+    public ModelAndView userInfo(@RequestParam(value = "openid", required = false, defaultValue = "") String openid,
                                  HttpServletRequest request, Model model) {
         log.info("微信授权后跳转红包页面，openid={}", openid);
-        if (StringUtils.isBlank(openid)) {
-            log.warn("微信授权后跳转红包页面,openid为空,参数不正确");
-            throw new SellException(ResultEnum.PARAM_ERROR.getCode(), ResultEnum.PARAM_ERROR.getMessage());
-        }
         WxUsers wxUsers = SessionUtils.getAttribute(request, "wxUsers");
         log.info("微信授权后跳转红包页面，wxUsers={}", wxUsers);
 //        if(wxUsers==null){
@@ -238,6 +344,10 @@ public class WechatController {
 //            log.info("微信授权后跳转红包页面，通过数据库查询的数据，wxUsers={}", wxUsers);
 //        }
         if (wxUsers == null) {
+            if (StringUtils.isBlank(openid)) {
+                log.warn("微信授权后跳转红包页面,openid为空,参数不正确");
+                throw new SellException(ResultEnum.PARAM_ERROR.getCode(), ResultEnum.PARAM_ERROR.getMessage());
+            }
             //确保session过期后，重新进入会获取到最新的信息，而不是数据库的数据
             wxUsers = getWxUsers(openid);
             log.info("微信授权后跳转红包页面，第一次进入首页，wxUsers={}", wxUsers);
@@ -248,6 +358,8 @@ public class WechatController {
             log.info("微信授权后跳转红包页面，用户没有关注公众号，用户信息:{}", wxUsers);
             return new ModelAndView("wechat/not-followed");
         }
+        wxUserCheck(wxUsers);
+
         SessionUtils.setAttribute(request, "wxUsers", wxUsers);
         //3.设置用户信息
         WxUsersDTO wxUsersDTO = new WxUsersDTO();
@@ -263,11 +375,18 @@ public class WechatController {
         List<RedPacketDTO> redPacketDTOList = redPacketService.findRedPacketDTOList();
         for (RedPacketDTO redPacketDTO : redPacketDTOList) {
             int len = redPacketDTO.getOpenid().length();
-            redPacketDTO.setOpenid("***" + redPacketDTO.getOpenid().substring(len - 6, len));
+            redPacketDTO.setOpenid("***" + redPacketDTO.getOpenid().substring((len - 6) >= 0 ? (len - 6) : 0, len));
         }
         log.info("微信授权后跳转红包页面");
         model.addAttribute("redPacketDTOList", redPacketDTOList);
         return new ModelAndView("wechat/index");
+    }
+
+    private void wxUserCheck(WxUsers wxUsers) {
+        if (wxUsers.getStatus().equals(1)) {
+            log.warn("微信用户校验,用户已被禁用，wxUsers={}", wxUsers);
+            throw new SellException(ResultEnum.LOGIN_FAIL);
+        }
     }
 
     private WxUsers getWxUsers(String openid) {

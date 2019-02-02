@@ -2,6 +2,8 @@ package com.huijava.superiorjavablogs.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class WxUsersDTO {
 
@@ -29,5 +31,9 @@ public class WxUsersDTO {
      * 用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间
      */
     private Long subscribeTime;
+    /**
+     * 修改时间
+     */
+    private Date updateTime;
 
 }

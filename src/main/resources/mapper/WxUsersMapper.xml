@@ -12,6 +12,7 @@
       <result column="sex" jdbcType="TINYINT" property="sex"/>
       <result column="city" jdbcType="VARCHAR" property="city"/>
       <result column="country" jdbcType="VARCHAR" property="country"/>
+      <result column="status" jdbcType="TINYINT" property="status"/>
       <result column="province" jdbcType="VARCHAR" property="province"/>
       <result column="language" jdbcType="VARCHAR" property="language"/>
       <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl"/>
