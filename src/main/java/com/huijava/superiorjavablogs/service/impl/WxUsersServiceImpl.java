@@ -72,6 +72,7 @@ public class WxUsersServiceImpl extends AbstractService<WxUsers> implements WxUs
             transaction = transactionManager.getTransaction(new DefaultTransactionDefinition());
             //修改pid
             WxUsers wxUsers = new WxUsers();
+            wxUsers.setId(wxUsers2.getId());
             wxUsers.setPid(wxUsers2.getPid());
 
             Example wxExample = new Example(WxUsers.class);
@@ -97,8 +98,10 @@ public class WxUsersServiceImpl extends AbstractService<WxUsers> implements WxUs
                 //增加次数
                 Example example = new Example(RedPacket.class);
                 example.createCriteria().andCondition("max_times=max_times")
-                        .andCondition("wx_users_id=", wxUsers.getPid()).andCondition("max_times <", maxTimes);
+                        .andCondition("wx_users_id=", wxUsers.getPid()).
+                        andCondition("max_times <", maxTimes);
                 RedPacket redPacket1 = new RedPacket();
+                redPacket1.setId(redPacket.getId());
                 redPacket1.setMaxTimes(redPacket.getMaxTimes() + 1);
 
                 rows = redPacketMapper.updateByExampleSelective(redPacket1, example);
