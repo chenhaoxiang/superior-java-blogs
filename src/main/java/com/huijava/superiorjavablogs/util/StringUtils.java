@@ -214,13 +214,25 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      */
     public static String getRandomString(int length) { //length表示生成字符串的长度
         String base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ~!@#$%^&*_+=-,.;':";
+        StringBuffer sb = getStringBuffer(length, base);
+        return sb.toString();
+    }
+
+
+    public static String getRedPaxketRandomString(int length) {
+        String base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuffer sb = getStringBuffer(length, base);
+        return sb.toString();
+    }
+
+    private static StringBuffer getStringBuffer(int length, String base) {
         Random random = new Random();
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < length; i++) {
             int number = random.nextInt(base.length());
             sb.append(base.charAt(number));
         }
-        return sb.toString();
+        return sb;
     }
 
     /**
