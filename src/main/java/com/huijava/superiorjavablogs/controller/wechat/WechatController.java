@@ -155,12 +155,11 @@ public class WechatController {
         }
 
         //获取下级人数
-        List<WxUsersDTO> wxUsersDTOList = wxUsersService.findWxUsersDTOByPid(wxUsers.getId());
+        List<WxUsersDTO> wxUsersDTOList = getWxUsersDTOS(wxUsers);
         log.info("请求绑定上级，下级信息:{},wxUsers={}", wxUsersDTOList, wxUsers);
 
         model.addAttribute("wxUsersDTOList", wxUsersDTOList);
         model.addAttribute("wxUsersDTO", wxUsers);
-
         return new ModelAndView("wechat/invitation");
     }
 
@@ -256,12 +255,28 @@ public class WechatController {
         }
 
         //获取下级人数
-        List<WxUsersDTO> wxUsersDTOList = wxUsersService.findWxUsersDTOByPid(wxUsers.getId());
+        List<WxUsersDTO> wxUsersDTOList = getWxUsersDTOS(wxUsers);
         log.info("邀请页面，下级信息:{},wxUsers={}", wxUsersDTOList, wxUsers);
+
 
         model.addAttribute("wxUsersDTOList", wxUsersDTOList);
         model.addAttribute("wxUsersDTO", wxUsers);
         return new ModelAndView("wechat/invitation");
+    }
+
+    /**
+     * 获取下级信息，屏蔽openid
+     *
+     * @param wxUsers
+     * @return
+     */
+    private List<WxUsersDTO> getWxUsersDTOS(WxUsers wxUsers) {
+        List<WxUsersDTO> wxUsersDTOList = wxUsersService.findWxUsersDTOByPid(wxUsers.getId());
+        for (WxUsersDTO wxUsersDTO : wxUsersDTOList) {
+            int len = wxUsersDTO.getOpenid().length();
+            wxUsersDTO.setOpenid("***" + wxUsersDTO.getOpenid().substring(len - 6, len));
+        }
+        return wxUsersDTOList;
     }
 
     /**

@@ -85,7 +85,7 @@
                                 ${redPacketDetailsDTO.createTime?string('yyyy-MM-dd HH:mm:ss')}
                             </td>
                             <td>
-                                ${redPacketDetailsDTO.getTime}
+                                ${redPacketDetailsDTO.getTime?c}
                             </td>
                         </tr>
                     </#list>
