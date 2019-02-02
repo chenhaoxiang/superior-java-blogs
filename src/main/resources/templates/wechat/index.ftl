@@ -52,6 +52,9 @@
                         昵称
                     </th>
                     <th>
+                        openid
+                    </th>
+                    <th>
                         领取金额
                     </th>
                     <th>
@@ -65,6 +68,9 @@
                         <tr>
                             <td>
                                 ${redPacketDTO.nickname}
+                            </td>
+                            <td>
+                                ${redPacketDTO.openid}
                             </td>
                             <td>
                                 ${redPacketDTO.sumMoney}

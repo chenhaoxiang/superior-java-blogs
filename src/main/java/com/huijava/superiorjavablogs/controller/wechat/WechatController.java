@@ -253,6 +253,10 @@ public class WechatController {
         //获取已被领取的红包
         //TODO 此处可以使用缓存
         List<RedPacketDTO> redPacketDTOList = redPacketService.findRedPacketDTOList();
+        for (RedPacketDTO redPacketDTO : redPacketDTOList) {
+            int len = redPacketDTO.getOpenid().length();
+            redPacketDTO.setOpenid("***" + redPacketDTO.getOpenid().substring(len - 6, len));
+        }
         log.info("微信授权后跳转红包页面");
         model.addAttribute("redPacketDTOList", redPacketDTOList);
         return new ModelAndView("wechat/index");

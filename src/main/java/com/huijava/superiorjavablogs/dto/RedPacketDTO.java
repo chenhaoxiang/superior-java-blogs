@@ -21,4 +21,9 @@ public class RedPacketDTO {
      * 昵称
      */
     private String nickname;
+
+    /**
+     * openid
+     */
+    private String openid;
 }

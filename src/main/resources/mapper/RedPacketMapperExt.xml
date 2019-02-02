@@ -21,6 +21,7 @@
         -->
         <result column="get_time" jdbcType="TIMESTAMP" property="getTime"/>
         <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="openid" jdbcType="VARCHAR" property="openid"/>
         <result column="sum_money" jdbcType="DECIMAL" property="sumMoney"/>
     </resultMap>
 
@@ -28,6 +29,7 @@
     <select id="findRedPacketDTOList" resultMap="RedPacketDTOResultMap">
         select
 		wu.nickname nickname,
+		wu.openid openid,
 		rp.sum_money sum_money,
 		rp.update_time get_time
         from wx_users wu
