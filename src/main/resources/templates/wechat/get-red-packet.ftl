@@ -93,6 +93,12 @@
 
                 </tbody>
             </table>
+
+
+            <div style="color: red">
+                <p>友情提示：红包领取后请尽快进入支付宝口令红包进行输入口令领取</p>
+            </div>
+
         </div>
     </div>
 </div>
