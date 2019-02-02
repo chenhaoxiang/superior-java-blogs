@@ -101,10 +101,6 @@ public class WechatController {
             log.warn("请求绑定上级,time={},wxUsers={}", time, wxUsers);
         }
         model.addAttribute("newUser", 0);
-        if (wxUsers.getSubscribeTime() > time && wxUsers.getPid() == 0) {
-            //关注时间大于这个点的且没有填写邀请人的才能填写邀请人
-            model.addAttribute("newUser", 1);
-        }
 
         if (wxUsers.getPid() == 0) {
             RedPacket redPacket = redPacketService.getByInvitationCode(invitationCode);
@@ -143,6 +139,11 @@ public class WechatController {
         WxUsers wxUsers1 = wxUsersService.selectById(wxUsers.getId());
         log.info("请求绑定上级，更新用户信息:{}", wxUsers1);
         SessionUtils.setAttribute(request, "wxUsers", wxUsers1);
+
+        if (wxUsers1.getSubscribeTime() > time && wxUsers1.getPid() == 0) {
+            //关注时间大于这个点的且没有填写邀请人的才能填写邀请人
+            model.addAttribute("newUser", 1);
+        }
 
         //获取上级
         if (wxUsers.getPid() != 0) {
