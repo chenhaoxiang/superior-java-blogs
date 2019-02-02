@@ -1,5 +1,6 @@
 package com.huijava.superiorjavablogs.form;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.util.List;
@@ -38,12 +39,17 @@ public class WxUserInfoForm {
     private String province;
     private String country;
     private String headimgurl;
+    @JSONField(name = "subscribe_time")
     private Long subscribeTime;
     private String unionid;
     private String remark;
     private Integer groupid;
+    @JSONField(name = "subscribe_scene")
     private String subscribeScene;
+    @JSONField(name = "qr_scene")
     private Integer qrScene;
+    @JSONField(name = "qrScene_str")
     private String qrSceneStr;
+    @JSONField(name = "tagid_list")
     private List<Integer> tagidList;
 }
