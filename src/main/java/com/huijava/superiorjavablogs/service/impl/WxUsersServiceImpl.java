@@ -72,11 +72,11 @@ public class WxUsersServiceImpl extends AbstractService<WxUsers> implements WxUs
             transaction = transactionManager.getTransaction(new DefaultTransactionDefinition());
             //修改pid
             WxUsers wxUsers = new WxUsers();
-            wxUsers.setId(wxUsers2.getId());
             wxUsers.setPid(wxUsers2.getPid());
 
             Example wxExample = new Example(WxUsers.class);
-            wxExample.createCriteria().andCondition("pid=0");
+            wxExample.createCriteria().andCondition("pid=0").
+                    andCondition("id=", wxUsers.getId());
             int rows = wxUsersMapper.updateByExampleSelective(wxUsers, wxExample);
 
             if (rows != 1) {
@@ -99,7 +99,6 @@ public class WxUsersServiceImpl extends AbstractService<WxUsers> implements WxUs
                 example.createCriteria().andCondition("max_times=max_times")
                         .andCondition("wx_users_id=", wxUsers.getPid()).andCondition("max_times <", maxTimes);
                 RedPacket redPacket1 = new RedPacket();
-                redPacket1.setId(redPacket.getId());
                 redPacket1.setMaxTimes(redPacket.getMaxTimes() + 1);
 
                 rows = redPacketMapper.updateByExampleSelective(redPacket1, example);
