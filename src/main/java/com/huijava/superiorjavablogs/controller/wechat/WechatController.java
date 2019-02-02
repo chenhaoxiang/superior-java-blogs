@@ -120,8 +120,16 @@ public class WechatController {
      * @return
      */
     @RequestMapping({"invitation"})
-    public ModelAndView invitation(Model model) {
-        model.addAttribute("appid", wechatConfig.getAppId());
+    public ModelAndView invitation(Model model, HttpServletRequest request) {
+        WxUsers wxUsers = SessionUtils.getAttribute(request, "wxUsers");
+        log.info("邀请页面，wxUsers={}", wxUsers);
+        if (wxUsers == null) {
+            throw new SellException(ResultEnum.LOGIN_FAIL);
+        }
+//        if(wxUsers.get)
+        //获取下级人数
+
+
         return new ModelAndView("wechat/invitation");
     }
 

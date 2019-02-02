@@ -38,12 +38,12 @@ public class WxUserInfoForm {
     private String province;
     private String country;
     private String headimgurl;
-    private Long subscribe_time;
+    private Long subscribeTime;
     private String unionid;
     private String remark;
     private Integer groupid;
-    private String subscribe_scene;
-    private Integer qr_scene;
-    private String qr_scene_str;
-    private List<Integer> tagid_list;
+    private String subscribeScene;
+    private Integer qrScene;
+    private String qrSceneStr;
+    private List<Integer> tagidList;
 }

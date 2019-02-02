@@ -16,7 +16,7 @@
 
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <span class="label label-primary">我的邀请人数:${redPacket.times}个</span>
+                    <span class="label label-primary">邀请人数:${size}个</span>
                 </div>
             </div>
 
@@ -30,22 +30,23 @@
                 </div>
             </div>
 
-            <div class="row clearfix" style="margin-top: 5px;">
-                <div class="col-md-12 column">
-                    <a href="/wechat/getRedPacket?getRedPacket=1" style="margin-left: 2px;margin-right: 2px;"
-                       type="button" class="btn btn-warning">获取支付宝口令红包</a>
-                </div>
-            </div>
-
-            <#if message??>
-                <div style="color: red">
-                    <p>${message}</p>
+            <#if isOldUser??>
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <form role="form" action="/wechat/submitInvitationCode">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">邀请码:</label>
+                                <input type="text" class="form-control" id="invitationCode"/>
+                            </div>
+                            <button type="submit" class="btn btn-default">提交</button>
+                        </form>
+                    </div>
                 </div>
             </#if>
 
             <div class="page-header">
                 <h1>
-                    我的红包(${sumMoney})
+                    我的邀请信息
                 </h1>
             </div>
             <table class="table table-condensed table-hover table-bordered"
@@ -53,16 +54,18 @@
                 <thead>
                 <tr>
                     <th>
-                        红包口令
+                        昵称
+                    </th>
+
+                    <th>
+                        openid
+                    </th>
+
+                    <th>
+                        领取金额
                     </th>
                     <th>
-                        金额
-                    </th>
-                    <th>
-                        领取时间
-                    </th>
-                    <th>
-                        时间戳
+                        最后登录时间
                     </th>
                 </tr>
                 </thead>
