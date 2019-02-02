@@ -27,7 +27,7 @@
     <select id="findRedPacketDetailsDTOList" resultMap="RedPacketDetailsDTOResultMap">
         select
         rpd.get_time get_time,
-        rpd.create_time createTime,
+        rpd.create_time create_time,
         arpc.password password,
         arpc.money money
         from ali_red_packet_config arpc
