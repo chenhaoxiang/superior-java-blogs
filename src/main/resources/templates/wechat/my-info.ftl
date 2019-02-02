@@ -16,9 +16,11 @@
 
             <div class="row clearfix" style="margin-top: 5px;">
                 <div class="col-md-12 column">
+
                     <a href="/wechat/getRedPacket" type="button" class="btn btn-default btn-info">领红包</a>
                     <a href="/wechat/userInfo?openid=${wxUsersDTO.openid}" style="margin-left: 2px;margin-right: 2px;"
-                       type="button" class="btn btn-warning">首页</a>
+                       type="button"
+                       class="btn btn-warning">首页</a>
                     <a href="/wechat/invitation" type="button" class="btn btn-success">邀请</a>
                 </div>
             </div>
