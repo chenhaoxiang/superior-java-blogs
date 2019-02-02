@@ -35,18 +35,20 @@
                 </div>
             </div>
 
-            <#if isNewUser??>
-                <div class="row clearfix">
-                    <div class="col-md-12 column">
-                        <form role="form" action="/wechat/submitInvitationCode">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">邀请码:</label>
-                                <input type="text" class="form-control" id="invitationCode" name="invitationCode"/>
-                            </div>
-                            <button type="submit" class="btn btn-default">提交</button>
-                        </form>
+            <#if newUser??>
+                <#if newUser==1>
+                    <div class="row clearfix">
+                        <div class="col-md-12 column">
+                            <form role="form" action="/wechat/submitInvitationCode">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">邀请码:</label>
+                                    <input type="text" class="form-control" id="invitationCode" name="invitationCode"/>
+                                </div>
+                                <button type="submit" class="btn btn-default">提交</button>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                </#if>
             </#if>
 
             <#if message??>

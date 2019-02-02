@@ -74,7 +74,11 @@ public class WxUsersServiceImpl extends AbstractService<WxUsers> implements WxUs
             WxUsers wxUsers = new WxUsers();
             wxUsers.setId(wxUsers2.getId());
             wxUsers.setPid(wxUsers2.getPid());
-            int rows = wxUsersMapper.updateByPrimaryKeySelective(wxUsers2);
+
+            Example wxExample = new Example(WxUsers.class);
+            wxExample.createCriteria().andCondition("pid=0");
+            int rows = wxUsersMapper.updateByExampleSelective(wxUsers, wxExample);
+
             if (rows != 1) {
                 log.warn("修改邀请人数据，wxUsers2={},rows={}", wxUsers2, rows);
                 throw new ServiceException("插入数据失败");
