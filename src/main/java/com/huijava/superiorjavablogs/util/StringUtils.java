@@ -218,9 +218,14 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return sb.toString();
     }
 
-
+    /**
+     * 生成红包字符串
+     *
+     * @param length
+     * @return
+     */
     public static String getRedPaxketRandomString(int length) {
-        String base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        String base = "abcdefghijkmnpqrstuvwxyzABCDEFGHKLMNPQRSTUVWXYZ23456789";
         StringBuffer sb = getStringBuffer(length, base);
         return sb.toString();
     }

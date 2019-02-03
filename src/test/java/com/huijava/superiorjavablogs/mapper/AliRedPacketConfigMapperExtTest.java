@@ -24,15 +24,15 @@ public class AliRedPacketConfigMapperExtTest extends BaseTest {
      */
     @Test
     public void addAliRedPacketConfig() {
-        double[] sum = new double[]{132.00, 33.00};
-        int[] size = new int[]{10, 40};
+        double[] sum = new double[]{264.00, 66.00};
+        int[] size = new int[]{20, 80};
         List<AliRedPacketConfig> aliRedPacketConfigs = new ArrayList<>(64);
         for (int i = 0; i < size.length; i++) {
             double[] rs = divide(sum[i], size[i], 0.01);
             for (double each : rs) {
                 System.out.format("%.2f\n", each);
                 AliRedPacketConfig aliRedPacketConfig = new AliRedPacketConfig();
-                String password = "谙忆祝您新年快乐" + StringUtils.getRedPaxketRandomString(10);
+                String password = "谙忆祝您新年快乐" + StringUtils.getRedPaxketRandomString(12);
                 aliRedPacketConfig.setPassword(password);
                 //会有一定误差，这里不考虑修正，接受范围内
                 aliRedPacketConfig.setMoney(new BigDecimal(each).setScale(2, RoundingMode.HALF_UP));
