@@ -51,6 +51,12 @@
                 </#if>
             </#if>
 
+            <#if invitationCode??>
+                <div style="color: royalblue;margin-top: 2px;margin-bottom: 2px;">
+                    <p>${invitationCode}</p>
+                </div>
+            </#if>
+
             <#if message??>
                 <div style="color: red">
                     <p>${message}</p>

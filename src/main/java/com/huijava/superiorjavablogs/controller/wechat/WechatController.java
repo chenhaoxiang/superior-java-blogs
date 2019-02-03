@@ -253,6 +253,13 @@ public class WechatController {
                 model.addAttribute("myPName", wxUsers1.getNickname());
             }
         }
+        //获取邀请码
+        RedPacket redPacket = redPacketService.getByWxUsersId(wxUsers.getId());
+        log.info("邀请页面，邀请码信息:redPacket:{},wxUsers={}", redPacket, wxUsers);
+
+        if (redPacket != null) {
+            model.addAttribute("invitationCode", "邀请码为:" + redPacket.getInvitationCode());
+        }
 
         //获取下级人数
         List<WxUsersDTO> wxUsersDTOList = getWxUsersDTOS(wxUsers);
