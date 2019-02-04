@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.huijava.superiorjavablogs.entity.WxUsers;
 import com.huijava.superiorjavablogs.form.WxUserInfoForm;
 import com.huijava.superiorjavablogs.scheduler.WechatScheduler;
+import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -82,6 +83,9 @@ public class WechatUtils {
             return getWxUsers(accessToken, openid, times);
         } else {
             WxUserInfoForm wxUserInfoForm = JSON.parseObject(usersJson, WxUserInfoForm.class);
+            //TODO 去除微信昵称中的表情
+            String string = EmojiParser.removeAllEmojis(wxUserInfoForm.getNickname());
+            wxUserInfoForm.setNickname(string);
             BeanUtils.copyProperties(wxUserInfoForm, wxUsers);
             log.info("获取用户的基本信息,wxUsers={},wxUserInfoForm={}", wxUsers, wxUserInfoForm);
         }
