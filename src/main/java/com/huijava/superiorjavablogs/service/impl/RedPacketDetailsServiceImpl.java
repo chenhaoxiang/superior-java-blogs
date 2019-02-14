@@ -8,7 +8,6 @@ import com.huijava.superiorjavablogs.mapper.RedPacketDetailsMapperExt;
 import com.huijava.superiorjavablogs.service.RedPacketDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,7 +16,6 @@ import java.util.List;
  * @date 2019-02-01 01:41:24
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class RedPacketDetailsServiceImpl extends AbstractService<RedPacketDetails> implements RedPacketDetailsService {
     @Autowired
     private RedPacketDetailsMapper redPacketDetailsMapper;

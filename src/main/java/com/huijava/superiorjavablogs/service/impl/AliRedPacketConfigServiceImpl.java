@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2019-02-01 01:41:24
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class AliRedPacketConfigServiceImpl extends AbstractService<AliRedPacketConfig> implements AliRedPacketConfigService {
     @Autowired
     private AliRedPacketConfigMapper aliRedPacketConfigMapper;
@@ -32,6 +31,7 @@ public class AliRedPacketConfigServiceImpl extends AbstractService<AliRedPacketC
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer updateStatusByIdAndVersion(Integer redId, Integer status, Integer version) {
         return aliRedPacketConfigMapperExt.updateStatusByIdAndVersion(redId, status, version);
     }

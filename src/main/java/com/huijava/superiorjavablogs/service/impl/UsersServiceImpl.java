@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2018-09-12 18:23:40
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class UsersServiceImpl extends AbstractService<Users> implements UsersService {
     @Autowired
     private UsersMapperExt usersMapperExt;
@@ -37,6 +36,7 @@ public class UsersServiceImpl extends AbstractService<Users> implements UsersSer
      * @return
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer registerAdmin(Users users) {
         Users newUser = new Users();
         BeanUtils.copyProperties(users, newUser);
@@ -47,6 +47,7 @@ public class UsersServiceImpl extends AbstractService<Users> implements UsersSer
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer updatePassword(Users users) {
         //先查询出原来的用户
         Users realUser = usersMapperExt.selectByUserName(users.getUsername());

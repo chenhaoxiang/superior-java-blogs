@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huijava.superiorjavablogs.mapper.BlogsMapper">
+    <cache eviction='SOFT' flushInterval='2592000000'/>
+    <!--这个更高级的配置创建了一个 FIFO 缓存,并每隔 60 秒刷新,存数结果对象或列表的 512 个引用,而且返回的对象被认为是只读的,因此在不同线程中的调用者之间修改它们会导致冲突。可用的收回策略有, 默认的是 LRU:-->
+    <!--1.LRU – 最近最少使用的:移除最长时间不被使用的对象。-->
+    <!--2.FIFO – 先进先出:按对象进入缓存的顺序来移除它们。-->
+    <!--3.SOFT – 软引用:移除基于垃圾回收器状态和软引用规则的对象。-->
+    <!--4.WEAK – 弱引用:更积极地移除基于垃圾收集器状态和弱引用规则的对象。-->
+
     <resultMap id="BaseResultMap" type="com.huijava.superiorjavablogs.entity.Blogs">
         <!--
           WARNING - @mbg.generated

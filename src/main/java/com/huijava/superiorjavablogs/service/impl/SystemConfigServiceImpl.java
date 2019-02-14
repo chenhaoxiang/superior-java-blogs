@@ -7,7 +7,6 @@ import com.huijava.superiorjavablogs.service.SystemConfigService;
 import com.huijava.superiorjavablogs.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 /**
@@ -15,7 +14,6 @@ import tk.mybatis.mapper.entity.Example;
  * @date 2019-02-02 12:14:06
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class SystemConfigServiceImpl extends AbstractService<SystemConfig> implements SystemConfigService {
     @Autowired
     private SystemConfigMapper systemConfigMapper;

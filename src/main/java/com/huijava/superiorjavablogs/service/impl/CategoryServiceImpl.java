@@ -6,7 +6,6 @@ import com.huijava.superiorjavablogs.mapper.CategoryMapper;
 import com.huijava.superiorjavablogs.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
  * @date 2018-09-12 18:23:40
  */
 @Service
-@Transactional
 public class CategoryServiceImpl extends AbstractService<Category> implements CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;

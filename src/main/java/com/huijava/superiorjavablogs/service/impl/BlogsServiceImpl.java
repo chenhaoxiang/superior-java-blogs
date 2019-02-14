@@ -48,6 +48,7 @@ public class BlogsServiceImpl extends AbstractService<Blogs> implements BlogsSer
 
     @Async
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addBlogsViewsOne(String blogsToken) {
         LOGGER.info("增加博客访问量,blogsToken={}", blogsToken);
         blogsMapperExt.addBlogsViewsOne(blogsToken);
