@@ -93,4 +93,12 @@ public interface BlogsService extends Service<Blogs> {
      * @return
      */
     void addBlogsViewsOne(String blogsToken);
+
+    /**
+     * 查询所有，根据id倒叙
+     * 排除内容和摘要
+     *
+     * @return
+     */
+    List<Blogs> selectAllDescIdExContentAndSummary();
 }

@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -138,4 +139,12 @@ public class BlogsServiceImpl extends AbstractService<Blogs> implements BlogsSer
         return blogsMapperExt.selectBlogsByTitleKeyword(keyWord.trim());
     }
 
+    @Override
+    public List<Blogs> selectAllDescIdExContentAndSummary() {
+        Example example = new Example(Blogs.class);
+        //注意用的是类中的属性，不是数据库中的属性
+        example.orderBy("id").desc();
+        example.excludeProperties("content", "summary");
+        return blogsMapper.selectByExample(example);
+    }
 }

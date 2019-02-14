@@ -42,4 +42,15 @@ public class BlogsServiceImplTest extends BaseTest {
     }
 
 
+    @Test
+    public void selectAllDescId() {
+
+        //----------- Arrange -----------//
+        LOGGER.info("{}", blogsService.selectAllDescIdExContentAndSummary());
+
+        //-----------   Act   -----------//
+
+
+        //-----------  Assert -----------//
+    }
 }

@@ -68,7 +68,7 @@ public class BlogsAdminController extends BaseController {
         model.addAttribute("pageTable1", "pageBolg");
         model.addAttribute("pageTable2", "pageBolgListAll");
 
-        List<Blogs> blogsList = blogsService.selectAll();
+        List<Blogs> blogsList = blogsService.selectAllDescIdExContentAndSummary();
         log.info("获取的博客条数:{}", blogsList.size());
         model.addAttribute("blogsList", blogsList);
         model.addAttribute("cleanLocalStorage", cleanLocalStorage);
