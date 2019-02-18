@@ -48,7 +48,8 @@
                                 <!-- div.table-responsive -->
 
                                 <!-- div.dataTables_borderWrap -->
-                                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                                <table style="word-break:break-all; word-wrap:break-all;" id="dynamic-table"
+                                       class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th class="center">
