@@ -12,8 +12,16 @@ import com.huijava.superiorjavablogs.common.enums.BlogFieldEnum;
 import com.huijava.superiorjavablogs.common.enums.StatusEnum;
 import com.huijava.superiorjavablogs.dto.BlogsDTO;
 import com.huijava.superiorjavablogs.dto.UsersDTO;
-import com.huijava.superiorjavablogs.entity.*;
-import com.huijava.superiorjavablogs.service.*;
+import com.huijava.superiorjavablogs.entity.Blogs;
+import com.huijava.superiorjavablogs.entity.BlogsTagsR;
+import com.huijava.superiorjavablogs.entity.Category;
+import com.huijava.superiorjavablogs.entity.Tags;
+import com.huijava.superiorjavablogs.entity.Users;
+import com.huijava.superiorjavablogs.service.BlogsService;
+import com.huijava.superiorjavablogs.service.BlogsTagsRService;
+import com.huijava.superiorjavablogs.service.CategoryService;
+import com.huijava.superiorjavablogs.service.TagsService;
+import com.huijava.superiorjavablogs.service.UsersService;
 import com.huijava.superiorjavablogs.util.CookieUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -306,6 +314,23 @@ public class IndexController extends BaseController {
         loagTabbableBlogsLost(model, blogsService);
         model.addAttribute("pageTable1", "indexLi");
         return new ModelAndView("index");
+    }
+
+    /**
+     * 登录页面
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping("login")
+    public ModelAndView index(Model model, HttpServletRequest request) {
+        //获取最新的文章  16篇
+        log.debug("登录页面，当前访问人ip={}", getIpAddress(request));
+
+        //加载右边栏数据
+        loagTabbableBlogsLost(model, blogsService);
+
+        return new ModelAndView("login");
     }
 
 

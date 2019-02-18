@@ -14,7 +14,6 @@
             <#include "include/navbar.ftl"/>
         </div>
 
-
         <div class="col-md-12 column">
             <div class="col-md-8 column">
             <#--轮播图-->
