@@ -324,7 +324,6 @@ public class IndexController extends BaseController {
      */
     @RequestMapping("login")
     public ModelAndView index(Model model, HttpServletRequest request) {
-        //获取最新的文章  16篇
         log.debug("登录页面，当前访问人ip={}", getIpAddress(request));
 
         //加载右边栏数据
@@ -332,6 +331,24 @@ public class IndexController extends BaseController {
 
         return new ModelAndView("login");
     }
+
+
+    /**
+     * 注册页面
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping("register")
+    public ModelAndView register(Model model, HttpServletRequest request) {
+        log.debug("注册页面，当前访问人ip={}", getIpAddress(request));
+
+        //加载右边栏数据
+        loagTabbableBlogsLost(model, blogsService);
+
+        return new ModelAndView("register");
+    }
+
 
 
     /**

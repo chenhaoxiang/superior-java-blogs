@@ -67,7 +67,7 @@
                 <a href="/login">登录</a>
             </li>
             <li>
-                <a href="#">注册即将开放</a>
+                <a href="/register">注册即</a>
             </li>
         <#--<li>-->
         <#--<a href="#">注册</a>-->
