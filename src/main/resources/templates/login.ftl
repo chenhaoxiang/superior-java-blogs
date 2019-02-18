@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="zh">
 
 <head>
     <!-- Bootstrap -->
@@ -29,15 +29,7 @@
                                 </h3>
                             </div>
                         </div>
-                        <#if message?exists && message?length gt 0>
-                            <div class="col-md-12 column">
-                                <div class="alert alert-dismissable alert-danger">
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
-                                    </button>
-                                    ${message!""}
-                                </div>
-                            </div>
-                        </#if>
+
                         <form role="form" action="/loginRequest" method="post">
                             <div class="form-group">
                                 <label for="username">用户名</label><input type="text" placeholder="用户名"
