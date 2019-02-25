@@ -17,16 +17,21 @@ import com.huijava.superiorjavablogs.dto.UsersDTO;
 import com.huijava.superiorjavablogs.entity.Blogs;
 import com.huijava.superiorjavablogs.entity.BlogsTagsR;
 import com.huijava.superiorjavablogs.entity.Category;
+import com.huijava.superiorjavablogs.entity.Roles;
 import com.huijava.superiorjavablogs.entity.Tags;
 import com.huijava.superiorjavablogs.entity.Users;
 import com.huijava.superiorjavablogs.form.UsersForm;
 import com.huijava.superiorjavablogs.service.BlogsService;
 import com.huijava.superiorjavablogs.service.BlogsTagsRService;
 import com.huijava.superiorjavablogs.service.CategoryService;
+import com.huijava.superiorjavablogs.service.RolesService;
 import com.huijava.superiorjavablogs.service.TagsService;
 import com.huijava.superiorjavablogs.service.UsersService;
 import com.huijava.superiorjavablogs.util.CookieUtils;
 import com.huijava.superiorjavablogs.util.SessionUtils;
+import com.huijava.superiorjavablogs.util.email.SendEmail;
+import com.huijava.superiorjavablogs.util.email.impl.EmailConfigImpl;
+import com.huijava.superiorjavablogs.util.email.impl.SendEmailCallable;
 import com.huijava.superiorjavablogs.util.pass.PasswordUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -50,6 +55,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 不需要登录即可进行访问
@@ -72,41 +79,48 @@ public class IndexController extends BaseController {
     private TagsService tagsService;
     @Autowired
     private BlogsTagsRService blogsTagsRService;
+    @Autowired
+    private EmailConfigImpl emailConfig;
+    @Autowired
+    private RolesService rolesService;
 
 
     /**
-     * 发送邮件注册码
-     *
-     * @param model
+     * 邮件验证激活页面
+     * @param request
+     * @param token
+     * @param username
      * @return
      */
     @ResponseBody
-    @RequestMapping("getEmailCode")
-    public ResultModel getEmailCode(HttpServletRequest request, @Valid UsersForm usersForm,
-                                    BindingResult bindingResult) {
-        log.debug("发送邮件注册码，当前访问人ip={},信息：{}", getIpAddress(request), usersForm);
-
-        //进行参数校验
-        if (bindingResult.hasErrors()) {
-            if (!bindingResult.getAllErrors().isEmpty()) {
-                log.info("参数格式错误，error:{}", bindingResult.getAllErrors().get(0));
-                return new ResultModel(9999, bindingResult.getAllErrors().get(0).toString());
-            }
+    @RequestMapping("active/email/{token}/{username}")
+    public ResultModel getEmailCode(HttpServletRequest request, @PathVariable("token") String token,
+                                    @PathVariable("username") String username) {
+        LOGGER.info("邮箱验证激活页面，token={},username={}", token, username);
+        if (StringUtils.isBlank(token) || StringUtils.isBlank(username)) {
+            return new ResultModel(9999, "参数不正确");
         }
-        //判断用户名是否已经存在
-        Integer rows = usersService.selectUsersCountByUserName(usersForm.getUsername());
-        if (rows != null && rows.equals(1)) {
-            return new ResultModel(9998, "用户名已被占用");
+        //查询用户
+        Users users = usersService.selectUsersByUserName(username);
+        if (users == null) {
+            return new ResultModel(9998, "参数不正确,没有该账号");
         }
-        //判断邮箱是否已经存在
-        rows = usersService.selectUsersCountByUserName(usersForm.getEmail());
-        if (rows != null && rows.equals(1)) {
-            return new ResultModel(9997, "邮箱已注册");
+        if (StatusEnum.ACTIVE.getCode() == users.getStatus()) {
+            return new ResultModel(9997, "账号已经激活");
         }
-        //发送邮件
-
-
-        return new ResultModel(200, "邮箱验证码已发送,请注意查收邮件！");
+        String realToken = PasswordUtils.getToken(users.getSalt(), users.getPassword());
+        if (!realToken.equals(token)) {
+            return new ResultModel(9996, "校验失败");
+        }
+        Users updateUsers = new Users();
+        updateUsers.setId(users.getId());
+        updateUsers.setStatus((byte) StatusEnum.ACTIVE.getCode());
+        Integer rows = usersService.updateByPrimaryKeySelective(updateUsers);
+        if (rows != 1) {
+            LOGGER.error("邮件校验失败，修改用户信息失败,users={},updateUsers={}", users, updateUsers);
+            return new ResultModel(9995, "服务器异常,请重试");
+        }
+        return new ResultModel(200, "激活成功");
     }
 
 
@@ -122,11 +136,12 @@ public class IndexController extends BaseController {
                                    BindingResult bindingResult) {
         log.debug("进行注册，当前访问人ip={},注册信息：{}", getIpAddress(request), usersForm);
 
+        model.addAttribute("usersForm", usersForm);
         //进行参数校验
         if (bindingResult.hasErrors()) {
             if (!bindingResult.getAllErrors().isEmpty()) {
                 log.info("注册参数格式错误，error:{}", bindingResult.getAllErrors().get(0));
-                model.addAttribute("message", bindingResult.getAllErrors().get(0));
+                model.addAttribute("message", bindingResult.getAllErrors().get(0).getDefaultMessage());
                 return new ModelAndView("register");
             }
         }
@@ -134,23 +149,77 @@ public class IndexController extends BaseController {
         Integer rows = usersService.selectUsersCountByUserName(usersForm.getUsername());
         if (rows != null && rows.equals(1)) {
             model.addAttribute("message", "用户名已被占用");
-            model.addAttribute("usersForm", usersForm);
             return new ModelAndView("register");
         }
         //判断邮箱是否已经存在
         rows = usersService.selectUsersCountByUserName(usersForm.getEmail());
         if (rows != null && rows.equals(1)) {
             model.addAttribute("message", "邮箱已注册");
-            model.addAttribute("usersForm", usersForm);
             return new ModelAndView("register");
         }
-        //获取邮箱
+        //进行注册
+        Users users = new Users();
+        users.setUsername(usersForm.getUsername());
+        users.setEmail(usersForm.getEmail());
+        String salt = PasswordUtils.getSalt();
+        users.setSalt(salt);
+        users.setPassword(PasswordUtils.getPassword(usersForm.getPassword(), salt));
+        users.setStatus((byte) StatusEnum.TO_BE_ACTIVATED.getCode());
 
+        //获取用户rolesId
+        String rolesName = "users";
+        Roles roles = rolesService.selectByName(rolesName);
+        if (roles == null) {
+            //插入用户
+            roles = new Roles();
+            roles.setName(rolesName);
+            roles.setComment("普通用户");
+            rolesService.insertSelective(roles);
+        }
+        users.setRolesId(roles.getId());
+        users.setNikeName(usersForm.getUsername());
+        users.setContributeCount(0L);
+        users.setContributeWeight(0L);
+        users.setFollowersCount(0);
+        rows = usersService.insertSelective(users);
+        LOGGER.info("用户进行注册，用户信息：{},影响行数:{}", users, rows);
+        if (rows != 1) {
+            LOGGER.error("服务器异常，用户进行注册，用户信息:{},影响行数:{}", users, rows);
+            model.addAttribute("message", "服务器异常");
+            return new ModelAndView("register");
+        }
 
+        //发送邮件,用户进行激活
+        SendEmail sendEmail = new SendEmail() {
+            @Override
+            public String getId() {
+                return users.getId() + "";
+            }
+
+            @Override
+            public String getToken() {
+                return PasswordUtils.getToken(users.getSalt(), users.getPassword());
+            }
+
+            @Override
+            public String getName() {
+                return users.getUsername();
+            }
+
+            @Override
+            public String getEmail() {
+                return users.getEmail();
+            }
+        };
+        SendEmailCallable sendEmailCallable = new SendEmailCallable(emailConfig, sendEmail);
+
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(sendEmailCallable);
         //加载右边栏数据
         loagTabbableBlogsLost(model, blogsService);
 
-        return new ModelAndView("register");
+        //重定向到登录页面
+        return new ModelAndView("redirect:login");
     }
 
 
@@ -186,8 +255,11 @@ public class IndexController extends BaseController {
         }
 
         if (StatusEnum.ACTIVE.getCode() != users.getStatus()) {
-            log.info("用户被冻结，实际对象：{}", users);
+            log.info("用户状态不正常，实际对象：{}", users);
             model.addAttribute("message", "账号已被冻结，有问题请联系管理员");
+            if (StatusEnum.TO_BE_ACTIVATED.getCode() == users.getStatus()) {
+                model.addAttribute("message", "请查看邮箱进行激活账号!");
+            }
             return new ModelAndView("login");
         }
 
@@ -474,6 +546,7 @@ public class IndexController extends BaseController {
     public ModelAndView register(Model model, HttpServletRequest request) {
         log.debug("注册页面，当前访问人ip={}", getIpAddress(request));
 
+        model.addAttribute("usersForm", new UsersForm());
         //加载右边栏数据
         loagTabbableBlogsLost(model, blogsService);
 

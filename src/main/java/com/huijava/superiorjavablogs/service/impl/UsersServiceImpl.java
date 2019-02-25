@@ -25,8 +25,18 @@ public class UsersServiceImpl extends AbstractService<Users> implements UsersSer
     private UsersMapper usersMapper;
 
     @Override
+    public Integer updateByPrimaryKeySelective(Users users) {
+        return usersMapper.updateByPrimaryKeySelective(users);
+    }
+
+    @Override
     public Users selectUsersByUserName(String userName) {
         return usersMapperExt.selectByUserName(userName);
+    }
+
+    @Override
+    public Integer insertSelective(Users users) {
+        return usersMapper.insertSelective(users);
     }
 
     @Override

@@ -32,9 +32,4 @@ public class UsersForm implements Serializable {
     @Email(message = "邮箱格式不正确")
     private String email;
 
-    /**
-     * 邮箱验证码
-     */
-    @NotBlank(message = "邮箱验证码不能为空")
-    private String emailCode;
 }

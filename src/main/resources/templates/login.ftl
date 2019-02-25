@@ -40,26 +40,29 @@
                             </div>
                         </#if>
 
-                        <form role="form" action="/toLogin" method="post">
-                            <div class="form-group">
-                                <label for="username">用户名</label><input type="text" placeholder="用户名"
-                                                                        class="form-control"
-                                                                        name="username" id="username"/>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">密码</label><input type="password" placeholder="密码"
-                                                                       class="form-control"
-                                                                       name="password" id="password"/>
-                            </div>
-                            <#--<button style="width: 30%" type="submit" class="btn btn-success"> 登录 </button>-->
-                            <#--<button style="float: right;width: 30%" type="button" class="btn btn-danger">忘记密码</button>-->
-                            <button style="width: 30%" type="submit"
-                                    class="btn btn-success"> 登录
-                            </button>
-                            <button onclick="alert('开发中.谢谢您的支持')" style="float: right;width: 30%" type="button"
-                                    class="btn btn-danger">忘记密码
-                            </button>
-                        </form>
+
+                        <div class="col-md-12 column">
+                            <form role="form" action="/toLogin" method="post">
+                                <div class="form-group">
+                                    <label for="username">用户名</label><input type="text" placeholder="用户名"
+                                                                            class="form-control"
+                                                                            name="username" id="username"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">密码</label><input type="password" placeholder="密码"
+                                                                           class="form-control"
+                                                                           name="password" id="password"/>
+                                </div>
+                                <#--<button style="width: 30%" type="submit" class="btn btn-success"> 登录 </button>-->
+                                <#--<button style="float: right;width: 30%" type="button" class="btn btn-danger">忘记密码</button>-->
+                                <button style="width: 30%" type="submit"
+                                        class="btn btn-success"> 登录
+                                </button>
+                                <button onclick="alert('开发中.谢谢您的支持')" style="float: right;width: 30%" type="button"
+                                        class="btn btn-danger">忘记密码
+                                </button>
+                            </form>
+                        </div>
                     </div>
 
                     <div class="col-md-3 column">

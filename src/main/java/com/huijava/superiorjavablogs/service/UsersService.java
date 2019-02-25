@@ -9,6 +9,16 @@ import com.huijava.superiorjavablogs.entity.Users;
  * @date 2018-09-12 18:23:40
  */
 public interface UsersService extends Service<Users> {
+
+    /**
+     * 通过id修改用户信息
+     *
+     * @param users
+     * @return
+     */
+    Integer updateByPrimaryKeySelective(Users users);
+
+    Integer insertSelective(Users users);
     /**
      * 通过用户名获取用户
      *

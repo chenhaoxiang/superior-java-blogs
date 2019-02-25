@@ -21,7 +21,11 @@ public enum StatusEnum {
      */, DISABLE(1, "禁用")
     /*
      * 等待审核通过
-     */, WAITREVIEW(2, "待审核");
+     */, WAITREVIEW(2, "待审核")
+    /**
+     * 待激活
+     */
+    , TO_BE_ACTIVATED(3, "待激活");
     private int code;
     private String message;
 

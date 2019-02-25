@@ -28,31 +28,30 @@
                         </h3>
                     </div>
 
+                    <#if message?exists && message?length gt 0>
+                        <div class="col-md-12 column">
+                            <div class="alert alert-dismissable alert-danger">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X
+                                </button>
+                                ${message!""}
+                            </div>
+                        </div>
+                    </#if>
+
                     <div class="col-md-12 column">
 
-
-                        <#if message?exists && message?length gt 0>
-                            <div class="col-md-12 column">
-                                <div class="alert alert-dismissable alert-danger">
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
-                                    </button>
-                                    ${message!""}
-                                </div>
-                            </div>
-                        </#if>
-
-                        <form action="/" class="">
+                        <form action="/toRegister" class="">
 
                             <div class="form-group has-feedback">
                                 <label for="username">用户名</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><span
                                                 class="glyphicon glyphicon-user"></span></span>
-                                    <input name="form" id="username" class="form-control form-input"
+                                    <input name="username" id="username" class="form-control form-input"
                                            placeholder="请输入用户名"
                                            maxlength="32"
                                            minlength="3"
-                                           type="text">
+                                           type="text" value="${usersForm.username!''}">
                                 </div>
 
                                 <span style="color:red;display: none;" class="tips"></span>
@@ -67,7 +66,8 @@
                                 <div class="input-group">
                                     <span class="input-group-addon"><span
                                                 class="glyphicon glyphicon-lock"></span></span>
-                                    <input name="form" id="password" class="form-control form-input" placeholder="请输入密码"
+                                    <input name="password" id="password" class="form-control form-input"
+                                           placeholder="请输入密码"
                                            maxlength="32"
                                            minlength="6"
                                            type="password" value="${usersForm.password!''}">
@@ -126,7 +126,7 @@
                                 <div class="input-group">
                                 <span class="input-group-addon"><span
                                             class="glyphicon glyphicon-open-file"></span></span>
-                                    <input name="form" id="email" class="form-control form-input" placeholder="请输入邮箱"
+                                    <input name="email" id="email" class="form-control form-input" placeholder="请输入邮箱"
                                            type="email" value="${usersForm.email!''}">
                                 </div>
                                 <span style="color:red;display: none;" class="tips"></span>
@@ -136,31 +136,31 @@
                                       class="glyphicon glyphicon-ok form-control-feedback"></span>
                             </div>
 
-                            <div class="row">
-                                <div class="col-xs-7">
-                                    <div class="form-group has-feedback">
-                                        <label for="emailCode">邮箱校验码</label>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><span
-                                                        class="glyphicon glyphicon-qrcode"></span></span>
-                                            <input name="form" id="emailCode" class="form-control form-input"
-                                                   placeholder="校验码" maxlength="6"
-                                                   type="text" value="${usersForm.emailCode!''}">
-                                        </div>
-                                        <span style="color:red;display: none;" class="tips"></span>
-                                        <span style="display: none;"
-                                              class="glyphicon glyphicon-remove form-control-feedback"></span>
-                                        <span style="display: none;"
-                                              class="glyphicon glyphicon-ok form-control-feedback"></span>
-                                    </div>
-                                </div>
-                                <div class="col-xs-5 text-center" style="padding-top: 26px">
-                                    <button onclick="getEmailCode()" type="button" id="loadingButton"
-                                            class="btn btn-primary" autocomplete="off">
-                                        获取邮箱校验码
-                                    </button>
-                                </div>
-                            </div>
+                            <#--<div class="row">-->
+                            <#--<div class="col-xs-7">-->
+                            <#--<div class="form-group has-feedback">-->
+                            <#--<label for="emailCode">邮箱校验码</label>-->
+                            <#--<div class="input-group">-->
+                            <#--<span class="input-group-addon"><span-->
+                            <#--class="glyphicon glyphicon-qrcode"></span></span>-->
+                            <#--<input name="form" id="emailCode" class="form-control form-input"-->
+                            <#--placeholder="校验码" maxlength="6"-->
+                            <#--type="text" value="${usersForm.emailCode!''}">-->
+                            <#--</div>-->
+                            <#--<span style="color:red;display: none;" class="tips"></span>-->
+                            <#--<span style="display: none;"-->
+                            <#--class="glyphicon glyphicon-remove form-control-feedback"></span>-->
+                            <#--<span style="display: none;"-->
+                            <#--class="glyphicon glyphicon-ok form-control-feedback"></span>-->
+                            <#--</div>-->
+                            <#--</div>-->
+                            <#--<div class="col-xs-5 text-center" style="padding-top: 26px">-->
+                            <#--<button onclick="getEmailCode()" type="button" id="loadingButton"-->
+                            <#--class="btn btn-primary" autocomplete="off">-->
+                            <#--获取邮箱校验码-->
+                            <#--</button>-->
+                            <#--</div>-->
+                            <#--</div>-->
 
                             <div class="form-group">
                                 <input class="form-control btn btn-primary" id="submit"
@@ -329,7 +329,7 @@
     var regPasswordAlpha = /[a-zA-Z]/;
     var regPasswordNum = /[0-9]/;
     var password;
-    var check = [false, false, false, false, false, false];
+    var check = [false, false, false, false];
 
     //校验成功函数
     function success(Obj, counter) {
@@ -414,61 +414,61 @@
     });
 
     // 邮箱
-    var regPhoneNum = /^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/;
-    $('#email').change(function () {
-        if (regPhoneNum.test($(this).val())) {
-            success($(this), 4);
-        } else {
-            fail($(this), 4, '邮箱格式不对');
-        }
-    });
+    // var regPhoneNum = /^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/;
+    // $('#email').change(function () {
+    //     if (regPhoneNum.test($(this).val())) {
+    //         success($(this), 4);
+    //     } else {
+    //         fail($(this), 4, '邮箱格式不对');
+    //     }
+    // });
 
     //邮箱验证码
-    var regMsg = '1234';
-    $('#emailCode').change(function () {
-        if (check[4]) {
-            if (regMsg == $(this).val()) {
-                success($(this), 5);
-            } else {
-                fail($(this), 5, '邮箱验证码错误');
-            }
-        } else {
-            $('#email').parent().parent().removeClass('has-success').addClass('has-error');
-        }
+    // var regMsg = '1234';
+    // $('#emailCode').change(function () {
+    //     if (check[4]) {
+    //         if (regMsg == $(this).val()) {
+    //             success($(this), 5);
+    //         } else {
+    //             fail($(this), 5, '邮箱验证码错误');
+    //         }
+    //     } else {
+    //         $('#email').parent().parent().removeClass('has-success').addClass('has-error');
+    //     }
+    //
+    // });
 
-    });
 
-
-    $('#loadingButton').click(function () {
-
-        if (check[4]) {
-            $(this).removeClass('btn-primary').addClass('disabled');
-
-            $(this).html('<span class="red">59</span> 秒后重新获取');
-            var secondObj = $('#loadingButton').find('span');
-            var secondObjVal = secondObj.text();
-
-            function secondCounter() {
-
-                var secondTimer = setTimeout(function () {
-                    secondObjVal--;
-                    secondObj.text(secondObjVal);
-                    secondCounter();
-                }, 1000);
-                if (secondObjVal == 0) {
-                    clearTimeout(secondTimer);
-                    $('#loadingButton').text('重新获取校验码');
-                    $('#loadingButton').removeClass('disabled').addClass('btn-primary');
-
-                }
-            }
-
-            secondCounter();
-        } else {
-            $('.form-input').eq(4).parent().parent().removeClass('has-success').addClass('has-error');
-        }
-
-    });
+    // $('#loadingButton').click(function () {
+    //
+    //     if (check[4]) {
+    //         $(this).removeClass('btn-primary').addClass('disabled');
+    //
+    //         $(this).html('<span class="red">59</span> 秒后重新获取');
+    //         var secondObj = $('#loadingButton').find('span');
+    //         var secondObjVal = secondObj.text();
+    //
+    //         function secondCounter() {
+    //
+    //             var secondTimer = setTimeout(function () {
+    //                 secondObjVal--;
+    //                 secondObj.text(secondObjVal);
+    //                 secondCounter();
+    //             }, 1000);
+    //             if (secondObjVal == 0) {
+    //                 clearTimeout(secondTimer);
+    //                 $('#loadingButton').text('重新获取校验码');
+    //                 $('#loadingButton').removeClass('disabled').addClass('btn-primary');
+    //
+    //             }
+    //         }
+    //
+    //         secondCounter();
+    //     } else {
+    //         $('.form-input').eq(4).parent().parent().removeClass('has-success').addClass('has-error');
+    //     }
+    //
+    // });
 
     $('#submit').click(function (e) {
         if (!check.every(function (value) {
@@ -484,41 +484,14 @@
     });
 
     $('#reset').click(function () {
-        $('input').slice(0, 6).parent().parent().removeClass('has-error has-success');
+        $('input').slice(0, 4).parent().parent().removeClass('has-error has-success');
         $('.tips').hide();
         $('.glyphicon-ok').hide();
         $('.glyphicon-remove').hide();
-        check = [false, false, false, false, false, false,];
+        check = [false, false, false, false];
     });
 </script>
 
-<script>
-    var getEmailCodeUrl = "/getEmailCode";
-
-    function getEmailCode() {
-        //获取邮箱验证码
-        //获取用户名，邮箱
-        var username = $("#username").val();
-        var email = $("#email").val();
-        if (username.length == 0 || email.length == 0) {
-            alert("用户名或者邮箱为空");
-            return;
-        }
-        ajaxPost(getEmailCodeUrl, "username=" + username + "&email=" + email, returnMethod, false, "");
-    }
-
-
-    function returnMethod(response, par) {
-        console.log("response=", response);
-        if (response.code == 200) {
-            //成功
-            confirm("", "", "请求提示", "请求成功，" + response.message)
-        } else {
-            confirm("", "", "请求提示", "请求失败，错误信息:" + response)
-        }
-    }
-
-</script>
 </body>
 
 </html>

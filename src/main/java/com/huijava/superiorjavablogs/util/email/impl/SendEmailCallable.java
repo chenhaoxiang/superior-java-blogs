@@ -105,9 +105,9 @@ public class SendEmailCallable implements Callable {
                     emailConfig.getContent() +
                     "</p><p style='color: #222; font-size: 16px; margin: 24px 0; padding: 0'>" +
                     "<a href='" +
-                    emailConfig.getActiveMailAdd() + "/" + sendEmail.getToken() +
+                    emailConfig.getActiveMailAdd() + "/" + sendEmail.getToken() + "/" + sendEmail.getName() +
                     "'target='_blank'style='background: #83a198; border-radius: 4px; color: #fff; padding: 8px 16px; text-decoration: none; word-break: break-all'>" +
-                    emailConfig.getActiveMailAdd() + "/" + sendEmail.getToken() +
+                    emailConfig.getActiveMailAdd() + "/" + sendEmail.getToken() + "/" + sendEmail.getName() +
                     "</a></p><p style='color: #999999;  font-size: 12px; margin: 0 0 10px; padding: 0'>" +
                     "如果你没有使用过huijava，请忽略此邮件。" +
                     "</p></div></td></tr></tbody></table>" +

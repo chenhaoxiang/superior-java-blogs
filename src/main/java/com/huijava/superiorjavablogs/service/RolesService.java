@@ -10,4 +10,7 @@ import com.huijava.superiorjavablogs.entity.Roles;
  */
 public interface RolesService extends Service<Roles> {
 
+    Roles selectByName(String users);
+
+    Integer insertSelective(Roles roles);
 }
