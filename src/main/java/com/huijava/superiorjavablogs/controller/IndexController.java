@@ -8,6 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.huijava.superiorjavablogs.common.base.BaseController;
 import com.huijava.superiorjavablogs.common.constant.BlogsConstans;
+import com.huijava.superiorjavablogs.common.constant.UserConstans;
 import com.huijava.superiorjavablogs.common.enums.BlogFieldEnum;
 import com.huijava.superiorjavablogs.common.enums.StatusEnum;
 import com.huijava.superiorjavablogs.dto.BlogsDTO;
@@ -23,14 +24,16 @@ import com.huijava.superiorjavablogs.service.CategoryService;
 import com.huijava.superiorjavablogs.service.TagsService;
 import com.huijava.superiorjavablogs.service.UsersService;
 import com.huijava.superiorjavablogs.util.CookieUtils;
+import com.huijava.superiorjavablogs.util.SessionUtils;
+import com.huijava.superiorjavablogs.util.pass.PasswordUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -64,6 +67,49 @@ public class IndexController extends BaseController {
     private TagsService tagsService;
     @Autowired
     private BlogsTagsRService blogsTagsRService;
+
+
+    /**
+     * 进行登录页面
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping("toLogin")
+    public ModelAndView toLogin(Model model, HttpServletRequest request,
+                                String username, String password) {
+        log.debug("进行登录页面，当前访问人ip={},username={}", getIpAddress(request), username);
+        //加载右边栏数据
+        loagTabbableBlogsLost(model, blogsService);
+        if (StringUtils.isBlank(username) ||
+                StringUtils.isBlank(password)) {
+            model.addAttribute("message", "账号/密码不能为空");
+            return new ModelAndView("login");
+        }
+        //通过用户名获取用户
+        Users users = usersService.selectUsersByUserName(username);
+        if (users == null) {
+            model.addAttribute("message", "账号/密码错误");
+            return new ModelAndView("login");
+        }
+        //校验密码
+        String pass = PasswordUtils.getPassword(password, users.getSalt());
+        LOGGER.info("当前登录的用户信息:users={},用户输入的密码:{}", users, pass);
+        if (!pass.equals(password)) {
+            model.addAttribute("message", "账号/密码错误");
+            return new ModelAndView("login");
+        }
+
+        if (StatusEnum.ACTIVE.getCode() != users.getStatus()) {
+            log.info("用户被冻结，实际对象：{}", users);
+            model.addAttribute("message", "账号已被冻结，有问题请联系管理员");
+            return new ModelAndView("login");
+        }
+
+        SessionUtils.setAttribute(request, UserConstans.LOGIN_SESSION_NAME, users);
+        //重定向到主页
+        return new ModelAndView("redirect:index");
+    }
 
 
     /**
@@ -255,7 +301,7 @@ public class IndexController extends BaseController {
      */
     @RequestMapping("blogs-details/{blogToken}")
     public ModelAndView blogDetails(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable("blogToken") String blogToken) {
-        if (StringUtils.isEmpty(blogToken)) {
+        if (StringUtils.isBlank(blogToken)) {
             log.debug("传过来的blogToken为空");
             return new ModelAndView("index");
         }
@@ -323,7 +369,7 @@ public class IndexController extends BaseController {
      * @return
      */
     @RequestMapping("login")
-    public ModelAndView index(Model model, HttpServletRequest request) {
+    public ModelAndView login(Model model, HttpServletRequest request) {
         log.debug("登录页面，当前访问人ip={}", getIpAddress(request));
 
         //加载右边栏数据

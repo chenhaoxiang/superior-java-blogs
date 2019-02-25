@@ -30,6 +30,17 @@
 
                     <div class="col-md-12 column">
 
+
+                        <#if message?exists && message?length gt 0>
+                            <div class="col-md-12 column">
+                                <div class="alert alert-dismissable alert-danger">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
+                                    </button>
+                                    ${message!""}
+                                </div>
+                            </div>
+                        </#if>
+
                         <form action="/" class="">
 
                             <div class="form-group has-feedback">

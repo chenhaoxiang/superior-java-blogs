@@ -30,7 +30,18 @@
                             </div>
                         </div>
 
-                        <form role="form" action="/loginRequest" method="post">
+
+                        <#if message?exists && message?length gt 0>
+                            <div class="col-md-12 column">
+                                <div class="alert alert-dismissable alert-danger">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
+                                    </button>
+                                    ${message!""}
+                                </div>
+                            </div>
+                        </#if>
+
+                        <form role="form" action="/toLogin" method="post">
                             <div class="form-group">
                                 <label for="username">用户名</label><input type="text" placeholder="用户名"
                                                                         class="form-control"
