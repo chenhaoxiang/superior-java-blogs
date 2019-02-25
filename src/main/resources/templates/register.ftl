@@ -70,7 +70,7 @@
                                     <input name="form" id="password" class="form-control form-input" placeholder="请输入密码"
                                            maxlength="32"
                                            minlength="6"
-                                           type="password">
+                                           type="password" value="${usersForm.password!''}">
                                 </div>
 
                                 <span style="color:red;display: none;" class="tips"></span>
@@ -88,7 +88,7 @@
                                     <input name="form" id="passwordConfirm" class="form-control form-input"
                                            placeholder="请再次输入密码" maxlength="32"
                                            minlength="6"
-                                           type="password">
+                                           type="password" value="${usersForm.password!''}">
                                 </div>
                                 <span style="color:red;display: none;" class="tips"></span>
                                 <span style="display: none;"
@@ -127,7 +127,7 @@
                                 <span class="input-group-addon"><span
                                             class="glyphicon glyphicon-open-file"></span></span>
                                     <input name="form" id="email" class="form-control form-input" placeholder="请输入邮箱"
-                                           type="email">
+                                           type="email" value="${usersForm.email!''}">
                                 </div>
                                 <span style="color:red;display: none;" class="tips"></span>
                                 <span style="display: none;"
@@ -145,7 +145,7 @@
                                                         class="glyphicon glyphicon-qrcode"></span></span>
                                             <input name="form" id="emailCode" class="form-control form-input"
                                                    placeholder="校验码" maxlength="6"
-                                                   type="text">
+                                                   type="text" value="${usersForm.emailCode!''}">
                                         </div>
                                         <span style="color:red;display: none;" class="tips"></span>
                                         <span style="display: none;"
@@ -155,7 +155,8 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-5 text-center" style="padding-top: 26px">
-                                    <button type="button" id="loadingButton" class="btn btn-primary" autocomplete="off">
+                                    <button onclick="getEmailCode()" type="button" id="loadingButton"
+                                            class="btn btn-primary" autocomplete="off">
                                         获取邮箱校验码
                                     </button>
                                 </div>
@@ -213,7 +214,7 @@
         storeLable: 'codeval',
         store: '#ehong-code-input',
         codeval: '#ehong-code'
-    }
+    };
     $.idcode = {
         getCode: function (option) {
             _commSetting(option);
@@ -491,6 +492,33 @@
     });
 </script>
 
+<script>
+    var getEmailCodeUrl = "/getEmailCode";
+
+    function getEmailCode() {
+        //获取邮箱验证码
+        //获取用户名，邮箱
+        var username = $("#username").val();
+        var email = $("#email").val();
+        if (username.length == 0 || email.length == 0) {
+            alert("用户名或者邮箱为空");
+            return;
+        }
+        ajaxPost(getEmailCodeUrl, "username=" + username + "&email=" + email, returnMethod, false, "");
+    }
+
+
+    function returnMethod(response, par) {
+        console.log("response=", response);
+        if (response.code == 200) {
+            //成功
+            confirm("", "", "请求提示", "请求成功，" + response.message)
+        } else {
+            confirm("", "", "请求提示", "请求失败，错误信息:" + response)
+        }
+    }
+
+</script>
 </body>
 
 </html>

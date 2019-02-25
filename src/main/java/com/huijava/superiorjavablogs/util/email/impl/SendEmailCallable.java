@@ -90,7 +90,7 @@ public class SendEmailCallable implements Callable {
             // StringBuilder是线程不安全的,但是速度快，这里因为只会有这个线程来访问，所以可以用这个
             StringBuilder sbd = new StringBuilder();
             sbd.append("<!DOCTYPE html><html><head><meta charset='UTF-8'>" +
-                    "<title>UIF邮箱激活</title>" +
+                    "<title>huijava邮箱激活</title>" +
                     "</head><body>" +
                     "<table style='background: #fff; border-collapse: collapse; border-spacing: 0; color: #222; font-size: 16px; height: 100%; margin: 0; padding: 0; width: 100%'bgcolor='#fff'>" +
                     "<tbody><tr><td style='-moz-hyphens: auto; -webkit-hyphens: auto; border-collapse: collapse !important; color: #222;  font-size: 16px; hyphens: auto; margin: 0; padding: 0; text-align: center; word-break: break-word'valign='top'align='center'>" +
@@ -109,7 +109,7 @@ public class SendEmailCallable implements Callable {
                     "'target='_blank'style='background: #83a198; border-radius: 4px; color: #fff; padding: 8px 16px; text-decoration: none; word-break: break-all'>" +
                     emailConfig.getActiveMailAdd() + "/" + sendEmail.getToken() +
                     "</a></p><p style='color: #999999;  font-size: 12px; margin: 0 0 10px; padding: 0'>" +
-                    "如果你没有使用过UIFuture，请忽略此邮件。" +
+                    "如果你没有使用过huijava，请忽略此邮件。" +
                     "</p></div></td></tr></tbody></table>" +
                     "<hr style='background: #ddd; border: none; color: #ddd; height: 1px; margin: 20px 0'>" +
                     "<table style='border-collapse: collapse; border-spacing: 0'width='100%'>" +

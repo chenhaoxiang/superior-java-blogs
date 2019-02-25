@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * @author chenhaoxiang
@@ -28,6 +29,26 @@ public class UsersServiceImpl extends AbstractService<Users> implements UsersSer
         return usersMapperExt.selectByUserName(userName);
     }
 
+    @Override
+    public Integer selectUsersCountByUserName(String userName) {
+        Example example = new Example(Users.class);
+        example.createCriteria().andCondition("username=", userName);
+        return usersMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public Users selectUsersByEmail(String email) {
+        Example example = new Example(Users.class);
+        example.createCriteria().andCondition("email=", email);
+        return usersMapper.selectOneByExample(example);
+    }
+
+    @Override
+    public Integer selectUsersCountByEmail(String email) {
+        Example example = new Example(Users.class);
+        example.createCriteria().andCondition("email=", email);
+        return usersMapper.selectCountByExample(example);
+    }
 
     /**
      * 管理员注册

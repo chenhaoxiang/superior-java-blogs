@@ -11,6 +11,7 @@ import com.huijava.superiorjavablogs.common.constant.BlogsConstans;
 import com.huijava.superiorjavablogs.common.constant.UserConstans;
 import com.huijava.superiorjavablogs.common.enums.BlogFieldEnum;
 import com.huijava.superiorjavablogs.common.enums.StatusEnum;
+import com.huijava.superiorjavablogs.common.result.ResultModel;
 import com.huijava.superiorjavablogs.dto.BlogsDTO;
 import com.huijava.superiorjavablogs.dto.UsersDTO;
 import com.huijava.superiorjavablogs.entity.Blogs;
@@ -18,6 +19,7 @@ import com.huijava.superiorjavablogs.entity.BlogsTagsR;
 import com.huijava.superiorjavablogs.entity.Category;
 import com.huijava.superiorjavablogs.entity.Tags;
 import com.huijava.superiorjavablogs.entity.Users;
+import com.huijava.superiorjavablogs.form.UsersForm;
 import com.huijava.superiorjavablogs.service.BlogsService;
 import com.huijava.superiorjavablogs.service.BlogsTagsRService;
 import com.huijava.superiorjavablogs.service.CategoryService;
@@ -34,13 +36,16 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +75,87 @@ public class IndexController extends BaseController {
 
 
     /**
-     * 进行登录页面
+     * 发送邮件注册码
+     *
+     * @param model
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("getEmailCode")
+    public ResultModel getEmailCode(HttpServletRequest request, @Valid UsersForm usersForm,
+                                    BindingResult bindingResult) {
+        log.debug("发送邮件注册码，当前访问人ip={},信息：{}", getIpAddress(request), usersForm);
+
+        //进行参数校验
+        if (bindingResult.hasErrors()) {
+            if (!bindingResult.getAllErrors().isEmpty()) {
+                log.info("参数格式错误，error:{}", bindingResult.getAllErrors().get(0));
+                return new ResultModel(9999, bindingResult.getAllErrors().get(0).toString());
+            }
+        }
+        //判断用户名是否已经存在
+        Integer rows = usersService.selectUsersCountByUserName(usersForm.getUsername());
+        if (rows != null && rows.equals(1)) {
+            return new ResultModel(9998, "用户名已被占用");
+        }
+        //判断邮箱是否已经存在
+        rows = usersService.selectUsersCountByUserName(usersForm.getEmail());
+        if (rows != null && rows.equals(1)) {
+            return new ResultModel(9997, "邮箱已注册");
+        }
+        //发送邮件
+
+
+        return new ResultModel(200, "邮箱验证码已发送,请注意查收邮件！");
+    }
+
+
+
+    /**
+     * 进行注册
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping("toRegister")
+    public ModelAndView toRegister(Model model, HttpServletRequest request, @Valid UsersForm usersForm,
+                                   BindingResult bindingResult) {
+        log.debug("进行注册，当前访问人ip={},注册信息：{}", getIpAddress(request), usersForm);
+
+        //进行参数校验
+        if (bindingResult.hasErrors()) {
+            if (!bindingResult.getAllErrors().isEmpty()) {
+                log.info("注册参数格式错误，error:{}", bindingResult.getAllErrors().get(0));
+                model.addAttribute("message", bindingResult.getAllErrors().get(0));
+                return new ModelAndView("register");
+            }
+        }
+        //判断用户名是否已经存在
+        Integer rows = usersService.selectUsersCountByUserName(usersForm.getUsername());
+        if (rows != null && rows.equals(1)) {
+            model.addAttribute("message", "用户名已被占用");
+            model.addAttribute("usersForm", usersForm);
+            return new ModelAndView("register");
+        }
+        //判断邮箱是否已经存在
+        rows = usersService.selectUsersCountByUserName(usersForm.getEmail());
+        if (rows != null && rows.equals(1)) {
+            model.addAttribute("message", "邮箱已注册");
+            model.addAttribute("usersForm", usersForm);
+            return new ModelAndView("register");
+        }
+        //获取邮箱
+
+
+        //加载右边栏数据
+        loagTabbableBlogsLost(model, blogsService);
+
+        return new ModelAndView("register");
+    }
+
+
+    /**
+     * 进行登录
      *
      * @param model
      * @return
@@ -78,7 +163,7 @@ public class IndexController extends BaseController {
     @RequestMapping("toLogin")
     public ModelAndView toLogin(Model model, HttpServletRequest request,
                                 String username, String password) {
-        log.debug("进行登录页面，当前访问人ip={},username={}", getIpAddress(request), username);
+        log.debug("进行登录，当前访问人ip={},username={}", getIpAddress(request), username);
         //加载右边栏数据
         loagTabbableBlogsLost(model, blogsService);
         if (StringUtils.isBlank(username) ||

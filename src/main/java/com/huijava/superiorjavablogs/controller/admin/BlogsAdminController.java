@@ -179,6 +179,7 @@ public class BlogsAdminController extends BaseController {
         log.info("插入博客成功，blogs={}", blogs);
         //清除博客缓存需要的参数
         attributes.addFlashAttribute("cleanLocalStorage", "1");
+        //重定向传值
         return new RedirectView("listAll");
     }
 

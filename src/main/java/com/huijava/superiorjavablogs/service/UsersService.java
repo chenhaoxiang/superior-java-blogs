@@ -18,6 +18,15 @@ public interface UsersService extends Service<Users> {
     Users selectUsersByUserName(String userName);
 
     /**
+     * 通过用户名获取用户数
+     *
+     * @param userName
+     * @return
+     */
+    Integer selectUsersCountByUserName(String userName);
+
+
+    /**
      * 管理员注册
      *
      * @param users
@@ -32,4 +41,22 @@ public interface UsersService extends Service<Users> {
      * @return
      */
     Integer updatePassword(Users users);
+
+    /**
+     * 通过邮件获取用户
+     *
+     * @param email
+     * @return
+     */
+    Users selectUsersByEmail(String email);
+
+    /**
+     * 通过邮件获取用户数
+     *
+     * @param email
+     * @return
+     */
+    Integer selectUsersCountByEmail(String email);
+
+
 }
