@@ -16,22 +16,22 @@ public class EmailConfigImpl implements EmailConfig {
     /**
      * 发件邮箱地址
      */
-    @Value("email.main.add")
+    @Value("${email.main.add}")
     private String mainAdd;
     /**
-     * 发件人的名称
+     * TODO 配置修改  发件人的名称
      */
-    @Value("email.main.name")
+    @Value("${{email.mail.name}")
     private String mainName;
     /**
      * 发件邮箱密码-也叫授权码
      */
-    @Value("email.password")
+    @Value("email.mail.password")
     private String password;
     /**
      * 发件邮箱端口
      */
-    @Value("email.port")
+    @Value("email.mail.port")
     private String port;
     /**
      * 设置邮件服务器主机名
