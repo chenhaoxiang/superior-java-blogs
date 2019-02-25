@@ -95,7 +95,7 @@ public class IndexController extends BaseController {
         //校验密码
         String pass = PasswordUtils.getPassword(password, users.getSalt());
         LOGGER.info("当前登录的用户信息:users={},用户输入的密码:{}", users, pass);
-        if (!pass.equals(password)) {
+        if (!pass.equals(users.getPassword())) {
             model.addAttribute("message", "账号/密码错误");
             return new ModelAndView("login");
         }

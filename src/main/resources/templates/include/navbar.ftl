@@ -63,12 +63,18 @@
             <button type="submit" class="btn btn-default">搜索</button>
         </form>
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a href="/login">登录</a>
-            </li>
-            <li>
-                <a href="/register">注册</a>
-            </li>
+            <#if _login_session_user_??>
+                <li>
+                    <a href="/users/${_login_session_user_.username}">欢迎您:${_login_session_user_.username}!</a>
+                </li>
+            <#else >
+                <li>
+                    <a href="/login">登录</a>
+                </li>
+                <li>
+                    <a href="/register">注册</a>
+                </li>
+            </#if>
         <#--<li>-->
         <#--<a href="#">注册</a>-->
         <#--</li>-->

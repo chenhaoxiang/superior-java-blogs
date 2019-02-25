@@ -30,7 +30,6 @@
                             </div>
                         </div>
 
-
                         <#if message?exists && message?length gt 0>
                             <div class="col-md-12 column">
                                 <div class="alert alert-dismissable alert-danger">
@@ -54,7 +53,7 @@
                             </div>
                             <#--<button style="width: 30%" type="submit" class="btn btn-success"> 登录 </button>-->
                             <#--<button style="float: right;width: 30%" type="button" class="btn btn-danger">忘记密码</button>-->
-                            <button onclick="alert('开发中.谢谢您的支持')" style="width: 30%" type="button"
+                            <button style="width: 30%" type="submit"
                                     class="btn btn-success"> 登录
                             </button>
                             <button onclick="alert('开发中.谢谢您的支持')" style="float: right;width: 30%" type="button"
