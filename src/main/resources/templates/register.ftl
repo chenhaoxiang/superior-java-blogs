@@ -51,7 +51,7 @@
                                            placeholder="请输入用户名"
                                            maxlength="32"
                                            minlength="3"
-                                           type="text" value="${usersForm.username!''}">
+                                           type="text">
                                 </div>
 
                                 <span style="color:red;display: none;" class="tips"></span>
@@ -70,7 +70,7 @@
                                            placeholder="请输入密码"
                                            maxlength="32"
                                            minlength="6"
-                                           type="password" value="${usersForm.password!''}">
+                                           type="password">
                                 </div>
 
                                 <span style="color:red;display: none;" class="tips"></span>
@@ -88,7 +88,7 @@
                                     <input name="form" id="passwordConfirm" class="form-control form-input"
                                            placeholder="请再次输入密码" maxlength="32"
                                            minlength="6"
-                                           type="password" value="${usersForm.password!''}">
+                                           type="password">
                                 </div>
                                 <span style="color:red;display: none;" class="tips"></span>
                                 <span style="display: none;"
@@ -127,7 +127,7 @@
                                 <span class="input-group-addon"><span
                                             class="glyphicon glyphicon-open-file"></span></span>
                                     <input name="email" id="email" class="form-control form-input" placeholder="请输入邮箱"
-                                           type="email" value="${usersForm.email!''}">
+                                           type="email">
                                 </div>
                                 <span style="color:red;display: none;" class="tips"></span>
                                 <span style="display: none;"

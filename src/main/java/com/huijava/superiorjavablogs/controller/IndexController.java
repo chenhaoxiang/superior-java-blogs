@@ -152,7 +152,7 @@ public class IndexController extends BaseController {
             return new ModelAndView("register");
         }
         //判断邮箱是否已经存在
-        rows = usersService.selectUsersCountByUserName(usersForm.getEmail());
+        rows = usersService.selectUsersCountByEmail(usersForm.getEmail());
         if (rows != null && rows.equals(1)) {
             model.addAttribute("message", "邮箱已注册");
             return new ModelAndView("register");
