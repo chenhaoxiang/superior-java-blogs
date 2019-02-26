@@ -28,6 +28,7 @@ import com.huijava.superiorjavablogs.service.RolesService;
 import com.huijava.superiorjavablogs.service.TagsService;
 import com.huijava.superiorjavablogs.service.UsersService;
 import com.huijava.superiorjavablogs.util.CookieUtils;
+import com.huijava.superiorjavablogs.util.DateUtils;
 import com.huijava.superiorjavablogs.util.SessionUtils;
 import com.huijava.superiorjavablogs.util.email.SendEmail;
 import com.huijava.superiorjavablogs.util.email.impl.EmailConfigImpl;
@@ -84,7 +85,10 @@ public class IndexController extends BaseController {
     @Autowired
     private RolesService rolesService;
 
-
+    /**
+     * 30天的毫秒数
+     */
+    private static Long MONTH_MS = 30 * 24 * 60 * 60 * 1000L;
     /**
      * 邮件验证激活页面
      * @param request
@@ -93,12 +97,17 @@ public class IndexController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("active/email/{token}/{username}")
-    public ResultModel getEmailCode(HttpServletRequest request, @PathVariable("token") String token,
+    @RequestMapping("active/email/{time}/{token}/{username}")
+    public ResultModel getEmailCode(HttpServletRequest request, @PathVariable("time") Long time, @PathVariable("token") String token,
                                     @PathVariable("username") String username) {
-        LOGGER.info("邮箱验证激活页面，token={},username={}", token, username);
+        LOGGER.info("邮箱验证激活页面，token={},username={},time={}", token, username, time);
         if (StringUtils.isBlank(token) || StringUtils.isBlank(username)) {
             return new ResultModel(9999, "参数不正确");
+        }
+        //判断时间是否在30天内
+        Long surplusTime = DateUtils.getLongDateTimeMS() - time;
+        if (surplusTime > MONTH_MS) {
+            return new ResultModel(9999, "验证链接已过期");
         }
         //查询用户
         Users users = usersService.selectUsersByUserName(username);
@@ -108,8 +117,9 @@ public class IndexController extends BaseController {
         if (StatusEnum.ACTIVE.getCode() == users.getStatus()) {
             return new ResultModel(9997, "账号已经激活");
         }
-        String realToken = PasswordUtils.getToken(users.getSalt(), users.getPassword());
+        String realToken = PasswordUtils.getToken(users.getSalt(), users.getPassword(), time);
         if (!realToken.equals(token)) {
+            LOGGER.warn("邮箱校验失败，realToken={},token={}", realToken, token);
             return new ResultModel(9996, "校验失败");
         }
         Users updateUsers = new Users();
@@ -120,7 +130,7 @@ public class IndexController extends BaseController {
             LOGGER.error("邮件校验失败，修改用户信息失败,users={},updateUsers={}", users, updateUsers);
             return new ResultModel(9995, "服务器异常,请重试");
         }
-        return new ResultModel(200, "激活成功");
+        return new ResultModel(200, "激活成功", "欢迎" + username + "使用huijava");
     }
 
 
@@ -198,7 +208,8 @@ public class IndexController extends BaseController {
 
             @Override
             public String getToken() {
-                return PasswordUtils.getToken(users.getSalt(), users.getPassword());
+                Long time = DateUtils.getLongDateTimeMS();
+                return DateUtils.getLongDateTimeMS() + "/" + PasswordUtils.getToken(users.getSalt(), users.getPassword(), DateUtils.getLongDateTimeMS());
             }
 
             @Override

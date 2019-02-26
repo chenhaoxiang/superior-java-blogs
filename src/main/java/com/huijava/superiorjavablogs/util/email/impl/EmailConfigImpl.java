@@ -16,57 +16,57 @@ public class EmailConfigImpl implements EmailConfig {
     /**
      * 发件邮箱地址
      */
-    @Value("${email.main.add}")
+    @Value("${email.mail.add}")
     private String mainAdd;
     /**
-     * TODO 配置修改  发件人的名称
+     * 发件人的名称
      */
-    @Value("${{email.mail.name}")
+    @Value("${email.mail.name}")
     private String mainName;
     /**
      * 发件邮箱密码-也叫授权码
      */
-    @Value("email.mail.password")
+    @Value("${email.mail.password}")
     private String password;
     /**
      * 发件邮箱端口
      */
-    @Value("email.mail.port")
+    @Value("${email.mail.port}")
     private String port;
     /**
      * 设置邮件服务器主机名
      */
-    @Value("email.mail.host")
+    @Value("${email.mail.host}")
     private String mailHost;
     /**
      * 发送邮件协议名称
      */
-    @Value("email.mail.protocol")
+    @Value("${email.mail.protocol}")
     private String mailProtocol;
     /**
      * 邮件内容:主题
      */
-    @Value("email.subject")
+    @Value("${email.subject}")
     private String subject;
     /**
      * 邮件激活的URL地址，未带状态以及用户id
      */
-    @Value("email.active.mail.add")
+    @Value("${email.active.mail.add}")
     private String activeMailAdd;
     /**
      * 客服邮箱
      */
-    @Value("email.service.mail")
+    @Value("${email.service.mail}")
     private String serviceMail;
     /**
      * 网站帮助中心URL地址
      */
-    @Value("email.help.center.url")
+    @Value("${email.help.center.url}")
     private String helpCenterUrl;
     /**
      * 邮件的正文内容
      */
-    @Value("email.content")
+    @Value("${email.content}")
     private String content;
 
     public EmailConfigImpl() {

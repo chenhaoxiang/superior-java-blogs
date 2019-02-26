@@ -1,8 +1,6 @@
 package com.huijava.superiorjavablogs.util.pass;
 
 
-import com.huijava.superiorjavablogs.util.DateUtils;
-
 /**
  * 密码加密工具
  */
@@ -27,6 +25,19 @@ public class PasswordUtils {
     }
 
     /**
+     * 生成 token 的方式-验证的令牌，不会过期的token
+     * 在用户点击验证邮箱地址时使用，密码使用的是盐和加密后的密码！
+     *
+     * @param salt
+     * @param password
+     * @return
+     */
+    public static String getTokenForever(String salt, String password) {
+        return getPassword(MD5Utils.md5Encode(salt + password), salt);
+    }
+
+
+    /**
      * 生成 token 的方式-验证的令牌
      * 在用户点击验证邮箱地址时使用，密码使用的是盐和加密后的密码！
      *
@@ -34,8 +45,8 @@ public class PasswordUtils {
      * @param password
      * @return
      */
-    public static String getToken(String salt, String password) {
-        return getPassword(MD5Utils.md5Encode(salt + password), DateUtils.getDateTimeMSString());
+    public static String getToken(String salt, String password, Long time) {
+        return getPassword(MD5Utils.md5Encode(salt + password), time.toString());
     }
 
 }
