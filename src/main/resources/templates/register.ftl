@@ -24,7 +24,7 @@
 
                     <div class="col-md-12 column" style="text-align: center">
                         <h3>
-                            <a href="/">huijava-注册(尚在开发中.)</a>
+                            <a href="/">huijava-注册</a>
                         </h3>
                     </div>
 
