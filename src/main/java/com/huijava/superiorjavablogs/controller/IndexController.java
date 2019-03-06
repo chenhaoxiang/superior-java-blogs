@@ -529,7 +529,7 @@ public class IndexController extends BaseController {
         model.addAttribute("pageTable1", "indexLi");
 
         String url = request.getRequestURI();
-        String putOnRecords = "湘ICP备16021674号-2";
+        String putOnRecords = "湘ICP备16021674号-1";
         if (url.contains("uifuture")) {
             putOnRecords = "湘ICP备16021674号-2";
         }
