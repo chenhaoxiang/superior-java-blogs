@@ -12,24 +12,26 @@
             <li id="indexLi">
                 <a href="/">首页</a>
             </li>
-            <li id="blogsLi">
-                <a href="/blogs/0/1">博客</a>
-            </li id="tagsLi">
-            <li>
-                <a href="#">标签云</a>
-            </li>
-            <li id="blogsRankLi">
-                <a href="/blogs-rank/view_count">排行</a>
-            </li>
-            <li>
-                <a href="#">问答</a>
-            </li>
-            <li>
-                <a href="#">商城</a>
-            </li>
-            <li>
-                <a href="#">招聘</a>
-            </li>
+
+            <#--<li id="blogsLi">-->
+            <#--<a href="/blogs/0/1">博客</a>-->
+            <#--</li>-->
+            <#--<li id="tagsLi">-->
+            <#--<a href="#">标签云</a>-->
+            <#--</li>-->
+            <#--<li id="blogsRankLi">-->
+            <#--<a href="/blogs-rank/view_count">排行</a>-->
+            <#--</li>-->
+            <#--<li>-->
+            <#--<a href="#">问答</a>-->
+            <#--</li>-->
+            <#--<li>-->
+            <#--<a href="#">商城</a>-->
+            <#--</li>-->
+            <#--<li>-->
+            <#--<a href="#">招聘</a>-->
+            <#--</li>-->
+
         <#--<li class="dropdown">-->
         <#--<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong-->
         <#--class="caret"></strong></a>-->

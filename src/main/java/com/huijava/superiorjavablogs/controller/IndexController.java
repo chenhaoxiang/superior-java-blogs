@@ -282,7 +282,7 @@ public class IndexController extends BaseController {
 
     /**
      * 博客搜索
-     *
+     * 
      * @param model
      * @return
      */

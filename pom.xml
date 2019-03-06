@@ -219,7 +219,8 @@
             <version>2.9.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.vdurmont/emoji-java -->
+        <!-- https://mvnrepository.com/artifact/com.vdurmont/emoji-java
+        去除表情依赖-->
         <dependency>
             <groupId>com.vdurmont</groupId>
             <artifactId>emoji-java</artifactId>

@@ -1,19 +1,19 @@
 <div class="tabbable" id="tabs-624145">
     <ul class="nav nav-tabs">
         <li class="active">
-            <a href="#panel-656376" data-toggle="tab">最热博客</a>
+            <a href="#panel-656376" data-toggle="tab">最热</a>
         </li>
         <li>
-            <a href="#panel-935493" data-toggle="tab">最棒博客</a>
+            <a href="#panel-935493" data-toggle="tab">最棒</a>
         </li>
         <li>
-            <a href="#" data-toggle="tab">推荐博客</a>
+            <a href="#" data-toggle="tab">推荐</a>
         </li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="panel-656376">
             <p>
-                <a class="page-header-more">180天内浏览量最高博客排行</a>
+                <a class="page-header-more">180天内浏览量最高排行</a>
             </p>
             <ol>
                 <#if viewBlogsList??>
@@ -28,7 +28,7 @@
         </div>
         <div class="tab-pane" id="panel-935493">
             <p>
-                <a class="page-header-more">180天内点赞最高博客排行</a>
+                <a class="page-header-more">180天内点赞最高排行</a>
             </p>
 
             <ol>
