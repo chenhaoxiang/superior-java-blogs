@@ -42,10 +42,11 @@
             <div class="row">
                 <div class="col-sm-12">
                     <span>Copyright &copy 2018-2020 <a href=""> huijava </a> All Rights Reserved.</span> |
-                    <span>备案号：<a href="http://www.miibeian.gov.cn/" target="_blank">湘ICP备16021674号-1</a></span>
+                    <span>备案号：<a href="http://www.miibeian.gov.cn/" target="_blank">
+                            ${putOnRecords!"湘ICP备16021674号"}</a></span>
                 </div>
                 <div class="col-sm-12">
-                    免责声明&版权声明：huijava所有内容均来自网络。若无意侵犯到您的权利，请及时联系<a
+                    免责声明&版权声明：本站所有内容均来自网络。若无意侵犯到您的权利，请及时联系<a
                         href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=3evs5Ovk5Ovv5J2srPO_srA"
                         target="_blank" class="page-header-more">网站管理员</a>
                     ，将在核实后立即删除相关内容！

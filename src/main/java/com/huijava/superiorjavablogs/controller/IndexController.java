@@ -518,7 +518,7 @@ public class IndexController extends BaseController {
      * @return
      */
     @RequestMapping({"index", "", "/"})
-    public ModelAndView index(Model model) {
+    public ModelAndView index(Model model, HttpServletRequest request) {
         //获取最新的文章  16篇
         List<BlogsDTO> newBlogsList = blogsService.selectNewBlogsDTOByNumber(20, StatusEnum.ACTIVE.getCode());
         log.debug("查询出最新的博客:newBlogsList.size={}", newBlogsList.size());
@@ -527,6 +527,14 @@ public class IndexController extends BaseController {
 
         loagTabbableBlogsLost(model, blogsService);
         model.addAttribute("pageTable1", "indexLi");
+
+        String url = request.getRequestURI();
+        String putOnRecords = "湘ICP备16021674号-2";
+        if (url.contains("uifuture")) {
+            putOnRecords = "湘ICP备16021674号-2";
+        }
+        model.addAttribute("putOnRecords", putOnRecords);
+
         return new ModelAndView("index");
     }
 
