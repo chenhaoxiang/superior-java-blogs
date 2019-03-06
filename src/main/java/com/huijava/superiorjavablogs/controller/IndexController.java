@@ -528,7 +528,7 @@ public class IndexController extends BaseController {
         loagTabbableBlogsLost(model, blogsService);
         model.addAttribute("pageTable1", "indexLi");
 
-        String url = request.getRequestURI();
+        String url = request.getServerName();
         String putOnRecords = "湘ICP备16021674号-1";
         if (url.contains("uifuture")) {
             putOnRecords = "湘ICP备16021674号-2";
