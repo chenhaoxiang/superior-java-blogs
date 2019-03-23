@@ -3,7 +3,7 @@
 
 <head>
     <#include "include/head.ftl"/>
-    <title>会Java</title>
+    <title>${title}</title>
 </head>
 
 <body>

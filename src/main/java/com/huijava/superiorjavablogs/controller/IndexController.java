@@ -530,10 +530,13 @@ public class IndexController extends BaseController {
 
         String url = request.getServerName();
         String putOnRecords = "湘ICP备16021674号-1";
+        String title = "会Java";
         if (url.contains("uifuture")) {
             putOnRecords = "湘ICP备16021674号-2";
+            title = "复制未来";
         }
         model.addAttribute("putOnRecords", putOnRecords);
+        model.addAttribute("title", title);
 
         return new ModelAndView("index");
     }

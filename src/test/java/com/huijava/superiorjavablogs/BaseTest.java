@@ -4,6 +4,8 @@
  */
 package com.huijava.superiorjavablogs;
 
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -17,5 +19,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringBootTest(classes = Application.class)
 @TestConfiguration("classpath:application.properties")
 //@ComponentScan(basePackages = {"com.huijava.**","me.chanjar.**"})
+@Slf4j
 public class BaseTest {
+    @Test
+    public void testEmail() {
+        log.error("测试发送erroer邮件");
+    }
 }

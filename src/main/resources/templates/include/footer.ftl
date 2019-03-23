@@ -14,6 +14,7 @@
                             <a href="https://lindexi.oschina.io/lindexi/" title="林德熙" target="_blank">林德熙</a>
                             <a href="http://blog26.com/" title="韩俊强" target="_blank">韩俊强</a>
                             <a href="http://www.hantao.org/" title="Hunter" target="_blank">Hunter</a>
+                            <a href="http://copyfuture.com/" title="Hunter" target="_blank">复制未来</a>
                         </div>
                     </div>
                 </div>
